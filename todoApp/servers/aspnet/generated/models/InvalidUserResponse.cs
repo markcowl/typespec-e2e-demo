@@ -10,10 +10,12 @@ namespace Todo.Service.Models
 {
 
     ///<summary>
-    /// Something is wrong with you.
+    /// The user is invalid (e.g. forgot to enter email address)
     ///</summary>
-    public partial class Standard4XxResponse : ApiError
+    public partial class InvalidUserResponse : ApiError
     {
+        public string Code { get; } = "invalid-user";
+
 
     }
 }
