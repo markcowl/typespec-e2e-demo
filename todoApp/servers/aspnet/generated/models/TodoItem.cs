@@ -62,6 +62,7 @@ namespace Todo.Service.Models
 
         public object Labels { get; set; }
 
+        [JsonPropertyName("_dummy")]
         public string Dummy { get; set; }
 
 
