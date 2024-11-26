@@ -33,7 +33,7 @@ namespace Todo.Service.Controllers
         [HttpPost]
         [Route("/items")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(TodoItem))]
-        public virtual async Task<IActionResult> Create([FromHeader(Name = "Content-Type")] string contentType = "application/json", body)
+        public virtual async Task<IActionResult> Create([FromHeader(Name = "Content-Type")] string contentType = "application/json", Model1 body)
         {
             var result = await TodoItemsOperationsImpl.CreateAsync(contentType, body);
             return Ok(result);

@@ -14,7 +14,7 @@ namespace Todo.Service.Models
     ///</summary>
     public partial class UserExistsResponse : ApiError
     {
-        public string Code { get; } = "user-exists";
+        public new string Code { get; } = "user-exists";
 
 
     }

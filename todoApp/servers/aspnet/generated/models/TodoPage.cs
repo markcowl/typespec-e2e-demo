@@ -16,8 +16,8 @@ namespace Todo.Service.Models
         ///</summary>
         public TodoItem[] Items { get; set; }
 
-        public Pagination { get; set; }
+        public Model0 Pagination { get; set; }
 
 
+    }
 }
-   } 
