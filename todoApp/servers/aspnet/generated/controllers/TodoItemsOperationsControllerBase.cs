@@ -35,7 +35,7 @@ namespace Todo.Service.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(TodoItem))]
         public virtual async Task<IActionResult> Create([FromHeader(Name = "Content-Type")] string contentType = "application/json", Model1 body)
         {
-            var result = await TodoItemsOperationsImpl.CreateAsync(contentType, body);
+            var result = await TodoItemsOperationsImpl.CreateAsync(contentType, body?.Item, body?.Attachments);
             return Ok(result);
         }
 

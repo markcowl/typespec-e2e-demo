@@ -20,12 +20,12 @@ namespace Todo.Service.Models
         ///<summary>
         /// User that the todo is assigned to
         ///</summary>
-        public object AssignedTo { get; set; }
+        public long AssignedTo { get; set; }
 
         ///<summary>
         /// A longer description of the todo item in markdown format
         ///</summary>
-        public object Description { get; set; }
+        public string Description { get; set; }
 
         ///<summary>
         /// The status of the todo item
