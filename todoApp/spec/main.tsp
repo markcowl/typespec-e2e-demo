@@ -239,7 +239,7 @@ namespace TodoItems {
      code: "not-found";
   }
 
-  //@friendlyName("{name}List", T)
+  @friendlyName("{name}List", T)
   model Page<T> {
     @pageItems items: T[];
   }
@@ -279,7 +279,7 @@ namespace TodoItems {
 
     @sharedRoute
     @post
-    op createJsonAttachment(
+    op createUrlAttachment(
       @header contentType: "application/json",
       @path itemId: TodoItem.id,
       @body contents: TodoAttachment,

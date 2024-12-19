@@ -175,14 +175,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - items
-                properties:
-                  items:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/TodoAttachment'
+                $ref: '#/components/schemas/TodoAttachmentList'
         '404':
           description: The server cannot find the requested resource.
           content:
@@ -202,7 +195,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Standard5XXResponse'
     post:
-      operationId: Attachments_createJsonAttachment_Attachments_createFileAttachment
+      operationId: Attachments_createUrlAttachment_Attachments_createFileAttachment
       parameters:
         - name: itemId
           in: path
@@ -374,6 +367,15 @@ components:
           type: string
           format: byte
           description: The contents of the file
+    TodoAttachmentList:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TodoAttachment'
     TodoItem:
       type: object
       required:

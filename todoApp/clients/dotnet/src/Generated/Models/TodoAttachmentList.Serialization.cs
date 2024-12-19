@@ -12,13 +12,13 @@ using Todo;
 namespace Todo.Models
 {
     /// <summary></summary>
-    public partial class PageTodoAttachment : IJsonModel<PageTodoAttachment>
+    public partial class TodoAttachmentList : IJsonModel<TodoAttachmentList>
     {
-        internal PageTodoAttachment()
+        internal TodoAttachmentList()
         {
         }
 
-        void IJsonModel<PageTodoAttachment>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
+        void IJsonModel<TodoAttachmentList>.Write(Utf8JsonWriter writer, ModelReaderWriterOptions options)
         {
             writer.WriteStartObject();
             JsonModelWriteCore(writer, options);
@@ -29,10 +29,10 @@ namespace Todo.Models
         /// <param name="options"> The client options for reading and writing models. </param>
         protected virtual void JsonModelWriteCore(Utf8JsonWriter writer, ModelReaderWriterOptions options)
         {
-            string format = options.Format == "W" ? ((IPersistableModel<PageTodoAttachment>)this).GetFormatFromOptions(options) : options.Format;
+            string format = options.Format == "W" ? ((IPersistableModel<TodoAttachmentList>)this).GetFormatFromOptions(options) : options.Format;
             if (format != "J")
             {
-                throw new FormatException($"The model {nameof(PageTodoAttachment)} does not support writing '{format}' format.");
+                throw new FormatException($"The model {nameof(TodoAttachmentList)} does not support writing '{format}' format.");
             }
             writer.WritePropertyName("items"u8);
             writer.WriteStartArray();
@@ -58,22 +58,22 @@ namespace Todo.Models
             }
         }
 
-        PageTodoAttachment IJsonModel<PageTodoAttachment>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options) => JsonModelCreateCore(ref reader, options);
+        TodoAttachmentList IJsonModel<TodoAttachmentList>.Create(ref Utf8JsonReader reader, ModelReaderWriterOptions options) => JsonModelCreateCore(ref reader, options);
 
         /// <param name="reader"> The JSON reader. </param>
         /// <param name="options"> The client options for reading and writing models. </param>
-        protected virtual PageTodoAttachment JsonModelCreateCore(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
+        protected virtual TodoAttachmentList JsonModelCreateCore(ref Utf8JsonReader reader, ModelReaderWriterOptions options)
         {
-            string format = options.Format == "W" ? ((IPersistableModel<PageTodoAttachment>)this).GetFormatFromOptions(options) : options.Format;
+            string format = options.Format == "W" ? ((IPersistableModel<TodoAttachmentList>)this).GetFormatFromOptions(options) : options.Format;
             if (format != "J")
             {
-                throw new FormatException($"The model {nameof(PageTodoAttachment)} does not support reading '{format}' format.");
+                throw new FormatException($"The model {nameof(TodoAttachmentList)} does not support reading '{format}' format.");
             }
             using JsonDocument document = JsonDocument.ParseValue(ref reader);
-            return DeserializePageTodoAttachment(document.RootElement, options);
+            return DeserializeTodoAttachmentList(document.RootElement, options);
         }
 
-        internal static PageTodoAttachment DeserializePageTodoAttachment(JsonElement element, ModelReaderWriterOptions options)
+        internal static TodoAttachmentList DeserializeTodoAttachmentList(JsonElement element, ModelReaderWriterOptions options)
         {
             if (element.ValueKind == JsonValueKind.Null)
             {
@@ -98,61 +98,61 @@ namespace Todo.Models
                     additionalBinaryDataProperties.Add(prop.Name, BinaryData.FromString(prop.Value.GetRawText()));
                 }
             }
-            return new PageTodoAttachment(items, additionalBinaryDataProperties);
+            return new TodoAttachmentList(items, additionalBinaryDataProperties);
         }
 
-        BinaryData IPersistableModel<PageTodoAttachment>.Write(ModelReaderWriterOptions options) => PersistableModelWriteCore(options);
+        BinaryData IPersistableModel<TodoAttachmentList>.Write(ModelReaderWriterOptions options) => PersistableModelWriteCore(options);
 
         /// <param name="options"> The client options for reading and writing models. </param>
         protected virtual BinaryData PersistableModelWriteCore(ModelReaderWriterOptions options)
         {
-            string format = options.Format == "W" ? ((IPersistableModel<PageTodoAttachment>)this).GetFormatFromOptions(options) : options.Format;
+            string format = options.Format == "W" ? ((IPersistableModel<TodoAttachmentList>)this).GetFormatFromOptions(options) : options.Format;
             switch (format)
             {
                 case "J":
                     return ModelReaderWriter.Write(this, options);
                 default:
-                    throw new FormatException($"The model {nameof(PageTodoAttachment)} does not support writing '{options.Format}' format.");
+                    throw new FormatException($"The model {nameof(TodoAttachmentList)} does not support writing '{options.Format}' format.");
             }
         }
 
-        PageTodoAttachment IPersistableModel<PageTodoAttachment>.Create(BinaryData data, ModelReaderWriterOptions options) => PersistableModelCreateCore(data, options);
+        TodoAttachmentList IPersistableModel<TodoAttachmentList>.Create(BinaryData data, ModelReaderWriterOptions options) => PersistableModelCreateCore(data, options);
 
         /// <param name="data"> The data to parse. </param>
         /// <param name="options"> The client options for reading and writing models. </param>
-        protected virtual PageTodoAttachment PersistableModelCreateCore(BinaryData data, ModelReaderWriterOptions options)
+        protected virtual TodoAttachmentList PersistableModelCreateCore(BinaryData data, ModelReaderWriterOptions options)
         {
-            string format = options.Format == "W" ? ((IPersistableModel<PageTodoAttachment>)this).GetFormatFromOptions(options) : options.Format;
+            string format = options.Format == "W" ? ((IPersistableModel<TodoAttachmentList>)this).GetFormatFromOptions(options) : options.Format;
             switch (format)
             {
                 case "J":
                     using (JsonDocument document = JsonDocument.Parse(data))
                     {
-                        return DeserializePageTodoAttachment(document.RootElement, options);
+                        return DeserializeTodoAttachmentList(document.RootElement, options);
                     }
                 default:
-                    throw new FormatException($"The model {nameof(PageTodoAttachment)} does not support reading '{options.Format}' format.");
+                    throw new FormatException($"The model {nameof(TodoAttachmentList)} does not support reading '{options.Format}' format.");
             }
         }
 
-        string IPersistableModel<PageTodoAttachment>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
+        string IPersistableModel<TodoAttachmentList>.GetFormatFromOptions(ModelReaderWriterOptions options) => "J";
 
-        /// <param name="pageTodoAttachment"> The <see cref="PageTodoAttachment"/> to serialize into <see cref="BinaryContent"/>. </param>
-        public static implicit operator BinaryContent(PageTodoAttachment pageTodoAttachment)
+        /// <param name="todoAttachmentList"> The <see cref="TodoAttachmentList"/> to serialize into <see cref="BinaryContent"/>. </param>
+        public static implicit operator BinaryContent(TodoAttachmentList todoAttachmentList)
         {
-            if (pageTodoAttachment == null)
+            if (todoAttachmentList == null)
             {
                 return null;
             }
-            return BinaryContent.Create(pageTodoAttachment, ModelSerializationExtensions.WireOptions);
+            return BinaryContent.Create(todoAttachmentList, ModelSerializationExtensions.WireOptions);
         }
 
-        /// <param name="result"> The <see cref="ClientResult"/> to deserialize the <see cref="PageTodoAttachment"/> from. </param>
-        public static explicit operator PageTodoAttachment(ClientResult result)
+        /// <param name="result"> The <see cref="ClientResult"/> to deserialize the <see cref="TodoAttachmentList"/> from. </param>
+        public static explicit operator TodoAttachmentList(ClientResult result)
         {
             using PipelineResponse response = result.GetRawResponse();
             using JsonDocument document = JsonDocument.Parse(response.Content);
-            return DeserializePageTodoAttachment(document.RootElement, ModelSerializationExtensions.WireOptions);
+            return DeserializeTodoAttachmentList(document.RootElement, ModelSerializationExtensions.WireOptions);
         }
     }
 }

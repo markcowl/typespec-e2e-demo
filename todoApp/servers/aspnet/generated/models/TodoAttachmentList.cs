@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 namespace Todo.Service.Models
 {
 
-    public partial class PageTodoAttachment
+    public partial class TodoAttachmentList
     {
         public TodoAttachment[] Items { get; set; }
 

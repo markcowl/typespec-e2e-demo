@@ -15,8 +15,8 @@ namespace Todo.Service
 
     public interface IAttachmentsOperations
     {
-        Task<Placeholder> ListAsync(long itemId);
-        Task CreateJsonAttachmentAsync(string contentType, long itemId, TodoAttachment contents);
+        Task<TodoAttachmentList> ListAsync(long itemId);
+        Task CreateUrlAttachmentAsync(string contentType, long itemId, TodoAttachment contents);
         Task CreateFileAttachmentAsync(string contentType, long itemId, FileAttachmentMultipartRequest body);
 
     }
