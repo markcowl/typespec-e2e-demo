@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Todo.Service.Models;
 
 namespace Todo.Service
@@ -16,10 +17,10 @@ namespace Todo.Service
     public interface ITodoItemsOperations
     {
         Task<TodoPage> ListAsync(int? limit, int? offset);
-        Task<TodoItem> CreateJsonAsync(string contentType, TodoItem item, TodoAttachment[]? attachments);
-        Task<TodoItem> CreateFormAsync(string contentType, ToDoItemMultipartRequest body);
+        Task<TodoItem> CreateJsonAsync(TodoItem item, TodoAttachment[]? attachments);
+        Task<TodoItem> CreateFormAsync(MultipartReader reader);
         Task<TodoItem> GetAsync(long id);
-        Task<TodoItem> UpdateAsync(string contentType, long id, TodoItemPatch patch);
+        Task<TodoItem> UpdateAsync(long id, TodoItemPatch patch);
         Task DeleteAsync(long id);
 
     }

@@ -10,6 +10,8 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Service.Models;
 using Todo.Service;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace Todo.Service.Controllers
 {
@@ -22,7 +24,7 @@ namespace Todo.Service.Controllers
 
         [HttpGet]
         [Route("/items/{itemId}/attachments")]
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(TodoAttachmentList))]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(PageTodoAttachment))]
         public virtual async Task<IActionResult> List(long itemId)
         {
             var result = await AttachmentsOperationsImpl.ListAsync(itemId);
@@ -33,19 +35,28 @@ namespace Todo.Service.Controllers
         [HttpPost]
         [Route("/items/{itemId}/attachments")]
         [ProducesResponseType((int)HttpStatusCode.NoContent, Type = typeof(void))]
-        public virtual async Task<IActionResult> CreateUrlAttachment([FromHeader(Name = "Content-Type")] string contentType = "application/json", long itemId, TodoAttachment body)
+        public virtual async Task<IActionResult> CreateJsonAttachment(long itemId, TodoAttachment body)
         {
-            await AttachmentsOperationsImpl.CreateUrlAttachmentAsync(contentType, itemId, body);
+            await AttachmentsOperationsImpl.CreateJsonAttachmentAsync(itemId, body);
             return Ok();
         }
 
 
         [HttpPost]
         [Route("/items/{itemId}/attachments")]
+        [Consumes("multipart/form-data")]
         [ProducesResponseType((int)HttpStatusCode.NoContent, Type = typeof(void))]
-        public virtual async Task<IActionResult> CreateFileAttachment([FromHeader(Name = "Content-Type")] string contentType = "multipart/form-data", long itemId, FileAttachmentMultipartRequest body)
+        public virtual async Task<IActionResult> CreateFileAttachment(HttpRequest request, Stream body)
         {
-            await AttachmentsOperationsImpl.CreateFileAttachmentAsync(contentType, itemId, body);
+            var boundary = request.GetMultipartBoundary();
+            if (boundary == null)
+            {
+                return BadRequest("Request missing multipart boundary");
+            }
+
+
+            var reader = new MultipartReader(boundary, body);
+            await AttachmentsOperationsImpl.CreateFileAttachmentAsync(reader);
             return Ok();
         }
 
