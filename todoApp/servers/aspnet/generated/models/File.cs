@@ -9,9 +9,13 @@ using System.Text.Json.Serialization;
 namespace Todo.Service.Models
 {
 
-    public partial class FileAttachmentMultipartRequest
+    public partial class File
     {
-        public HttpPartFile Contents { get; set; }
+        public string ContentType { get; set; }
+
+        public string Filename { get; set; }
+
+        public byte[] Contents { get; set; }
 
 
     }
