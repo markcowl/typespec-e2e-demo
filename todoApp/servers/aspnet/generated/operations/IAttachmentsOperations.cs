@@ -18,7 +18,7 @@ namespace Todo.Service
     {
         Task<PageTodoAttachment> ListAsync(long itemId);
         Task CreateJsonAttachmentAsync(long itemId, TodoAttachment contents);
-        Task CreateFileAttachmentAsync(MultipartReader reader);
+        Task CreateFileAttachmentAsync(long itemId, MultipartReader reader);
 
     }
 }
