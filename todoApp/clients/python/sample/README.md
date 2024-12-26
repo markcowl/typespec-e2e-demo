@@ -1,31 +1,31 @@
-# Sample for PetStore client
+# Sample for TodoApp client
 
 ## Overview
 
-This sample contains a brief usage of the Python generated client for the PetStore TypeSpec API.
+This sample contains a brief usage of the Python generated client for the TodoApp TypeSpec API.
 
 The operations include:
-- create a pet
-- get a pet from id
-- update a pet by id
-- list all available pets
-- delete a pet by id
+- create a user
+- get a non-exist todo item
+- create a todo item
+- get the created todo item
+- list all available todo items
+- delete the todo item
 
 ## How to run the sample
 
 First, run the following command to start the server:
 ```
-dotnet run --project <RepoRoot>/petstore/servers/aspnet/petstore.csproj
+dotnet run --project <RepoRoot>/todoApp/servers/aspnet/Todo.csproj
 ```
 
 Create and activate your own Python virtual environment ([reference](https://docs.python.org/3/library/venv.html)), and install the library with:
 ```
-cd <RepoRoot>/petstore/clients/python
+cd <RepoRoot>/todoApp/clients/python
 python setup.py install
 ```
 
 Then, run the following command to start the client in the current directory:
 ```
-cd <RepoRoot>/petstore/clients/python/sample
 python sample.py
 ```
