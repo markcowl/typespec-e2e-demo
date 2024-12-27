@@ -7,5 +7,6 @@ options:
     emitter-output-dir: "{project-root}/openapi/"
   "@typespec/http-client-csharp":
     emitter-output-dir: "{project-root}/clients/csharp"
+    namespace: "Getitdone.Client"
   "@typespec/http-server-csharp":
     emitter-output-dir: "{project-root}/servers/aspnet/generated"

@@ -7,7 +7,7 @@
 *   [Step 0: Generate service stub code from TypeSpec](#step-0-generate-service-code-with-typespec)
 *   [Step 1: Create a new asp.net core web API project](#step-1-create-a-new-aspnet-core-web-api-project)
 *   [Step 2: Organize the project structure](#step-2-organize-the-project-structure)
-*   [Step 3: Add generated code](#step-3-add-generated-code)
+*   [Step 3: Add generated stub code](#step-3-add-generated-code)
 *   [Step 4: Create repository interfaces](#step-4-create-repository-interfaces)
 *   [Step 5: Create in-memory repository implementations](#step-5-create-in-memory-repository-implementations)
 *   [Step 6: Create service layer implementations](#step-6-create-service-layer-implementations)
@@ -18,15 +18,16 @@
 *   [Step 11: Test the API with thunder client and a simple html front-end](#step-11-test-the-api-with-thunder-client-and-a-simple-html-front-end)
     *   [Using thunder client](#using-thunder-client)
     *   [Using the simple html front-end](#using-the-simple-html-front-end)
+*   [Step 12: Using the Client Example Application](#step-12-using-the-client-example-application)    
 *   [Conclusion](#conclusion)
 
 ## Introduction
 
-This guide demonstrates how to build a [Todoist](https://todoist.com/) (todo app) API clone using C# and .NET, leveraging service code generated from TypeSpec. We will create a service backend using pre-generated code and AI to generate custom logic for a complete implementation that uses local memory as the backing memory store. Please note, this project is only demonstrating a clone of the backend API and does not include a front-end application. The front-end is a simple HTML/JS/CSS application that interacts with the API to demonstrate basic functionality.
+This guide demonstrates how to build a [Todoist](https://todoist.com/) (todo app) API clone using C# and .NET, leveraging service code generated from TypeSpec. We will create a service backend using TypeSpec-generated stub code and a pre-existing implementation generated using AI. For instructions on using AI to generate the implementation code, refer to the [getitdone-implementation-ai](../doc/getitdone-implementation-ai.md) document.
 
-Access to a state-of-the-art AI model is extremely helpful for this task if you don't want to hand-write a lot of code. I used Google's Gemini 2.0 Flash reasoning model, which is free with a Google account and offers a large context window (1M+ tokens). We'll test the API using the Thunder Client extension for VS Code and a simple HTML/JS/CSS front-end.
+Please note, this project is only demonstrating a clone of the backend API and does not include a front-end application. The front-end is a simple HTML/JS/CSS application that interacts with the API to demonstrate basic functionality.
 
-The TypeSpec file was itself also generated with the help of AI - I used Windows Copilot to scrape the API documentation, Azure OpenAI o1-preview to generate an OpenAPI spec from the scraped documentation, then to generate the TypeSpec file from the OpenAPI spec. I then used GitHub Copilot in VS Code to work through the various build issues in the original TypeSpec file, and once the file was clean, I was able to generate the service code.
+The TypeSpec file was itself also generated with the help of AI - I used Windows Copilot to scrape the API documentation, Azure OpenAI o1-preview to generate an OpenAPI spec from the scraped documentation, then to generate the TypeSpec file from the OpenAPI spec. I then used GitHub Copilot in VS Code to work through the various build issues in the original TypeSpec file, and once the file was clean, I was able to generate the service stub code. The repository contains the full implementation for the API, and this guide will focus on using the TypeSpec-generated stub code with that implementation.
 
 ## Prerequisites
 
@@ -40,7 +41,7 @@ Before you begin, ensure you have the following installed:
 
 ## Step 0: Generate service stub code from TypeSpec
 
-Refer to the [user-journey](../doc/user-journey.md) for details on how to generate the service code using TypeSpec.
+Refer to the [user-journey](../doc/user-journey.md) for details on how to generate the service *stub* code using TypeSpec. This step will generate the basic structure and interfaces for your API. The implementation will be provided by the existing code in the repository.
 
 ## Step 1: Create a new asp.net core web API project
 
@@ -65,7 +66,7 @@ Refer to the [user-journey](../doc/user-journey.md) for details on how to genera
     *   `Repositories/InMemory`
     *   `Services`
 
-## Step 3: Add generated code
+## Step 3: Add generated stub code
 
 1.  **Copy generated files:** Copy the `generated` files folder from your TypeSpec project (located under `servers\aspnet\generated`) to the `GetitDone.Service` folder. Your `GetitDone.Service` folder should now look like this:
 
@@ -79,252 +80,75 @@ Refer to the [user-journey](../doc/user-journey.md) for details on how to genera
     ┣ Getitdone.Service.csproj
     ┗ Program.cs
     ```
+    This `generated` folder contains the stub code, including the controller base classes, generated from your TypeSpec file.
 
 ## Step 4: Create repository interfaces
 
-1.  **Create files:** Create the following files in the `Repositories` folder:
-    *   `ICommentRepository.cs`
-    *   `ILabelRepository.cs`
-    *   `IProjectRepository.cs`
-    *   `ISectionRepository.cs`
-    *   `ITodoItemRepository.cs`
+The repository already contains the implementation for the repository interfaces. The following files are located in the `Repositories` folder:
 
-2.  **Add code:** Use the following prompts with an AI agent to generate the code for each file. As the AI generates the code, copy and paste it into the appropriate file in your project.
+*   `ICommentRepository.cs`
+*   `ILabelRepository.cs`
+*   `IProjectRepository.cs`
+*   `ISectionRepository.cs`
+*   `ITodoItemRepository.cs`
 
-    *   **Prompt for `ICommentRepository.cs`:**
-
-        ```
-        Create a C# interface named `ICommentRepository` in the namespace `Getitdone.Service.Repositories`. It should have the following methods:
-        - `Task<Comment?> GetByIdAsync(string id)`
-        - `Task<IEnumerable<Comment>> GetAllAsync(string? todoitemId, string? projectId)`
-        - `Task<Comment> AddAsync(Comment comment)`
-        - `Task<Comment> UpdateAsync(Comment comment)`
-        - `Task DeleteAsync(string id)`
-        Use the `Getitdone.Service.Models` namespace for the `Comment` type.
-        ```
-
-    *   **Prompt for `ILabelRepository.cs`:**
-
-        ```
-        Create a C# interface named `ILabelRepository` in the namespace `Getitdone.Service.Repositories`. It should have the following methods:
-        - `Task<Label?> GetByIdAsync(string id)`
-        - `Task<IEnumerable<Label>> GetAllAsync()`
-        - `Task<Label> AddAsync(Label label)`
-        - `Task<Label> UpdateAsync(Label label)`
-        - `Task DeleteAsync(string id)`
-        Use the `Getitdone.Service.Models` namespace for the `Label` type.
-        ```
-
-    *   **Prompt for `IProjectRepository.cs`:**
-
-        ```
-        Create a C# interface named `IProjectRepository` in the namespace `Getitdone.Service.Repositories`. It should have the following methods:
-        - `Task<Project?> GetByIdAsync(string id)`
-        - `Task<IEnumerable<Project>> GetAllAsync()`
-        - `Task<Project> AddAsync(Project project)`
-        - `Task<Project> UpdateAsync(Project project)`
-        - `Task DeleteAsync(string id)`
-        - `Task<IEnumerable<Collaborator>> GetCollaboratorsAsync(string projectId)`
-        Use the `Getitdone.Service.Models` namespace for the `Project` and `Collaborator` types.
-        ```
-
-    *   **Prompt for `ISectionRepository.cs`:**
-
-        ```
-        Create a C# interface named `ISectionRepository` in the namespace `Getitdone.Service.Repositories`. It should have the following methods:
-        - `Task<Section?> GetByIdAsync(string id)`
-        - `Task<IEnumerable<Section>> GetAllAsync(string projectId)`
-        - `Task<Section> AddAsync(Section section)`
-        - `Task<Section> UpdateAsync(Section section)`
-        - `Task DeleteAsync(string id)`
-        Use the `Getitdone.Service.Models` namespace for the `Section` type.
-        ```
-
-    *   **Prompt for `ITodoItemRepository.cs`:**
-
-        ```
-        Create a C# interface named `ITodoItemRepository` in the namespace `Getitdone.Service.Repositories`. It should have the following methods:
-        - `Task<TodoItem?> GetByIdAsync(string id)`
-        - `Task<IEnumerable<TodoItem>> GetAllAsync()`
-        - `Task<TodoItem> AddAsync(TodoItem todoItem)`
-        - `Task<TodoItem> UpdateAsync(TodoItem todoItem)`
-        - `Task DeleteAsync(string id)`
-        Use the `Getitdone.Service.Models` namespace for the `TodoItem` type.
-        ```
+These interfaces define the contracts for interacting with the data layer.
 
 ## Step 5: Create in-memory repository implementations
 
-1.  **Create files:** Create the following files in the `Repositories/InMemory` folder:
-    *   `InMemoryCommentRepository.cs`
-    *   `InMemoryLabelRepository.cs`
-    *   `InMemoryProjectRepository.cs`
-    *   `InMemorySectionRepository.cs`
-    *   `InMemoryTodoItemRepository.cs`
+The repository already contains the implementation for the in-memory repositories. The following files are located in the `Repositories/InMemory` folder:
 
-2.  **Add code:** Use the following prompts with an AI agent to generate the code for each file:
+*   `InMemoryCommentRepository.cs`
+*   `InMemoryLabelRepository.cs`
+*   `InMemoryProjectRepository.cs`
+*   `InMemorySectionRepository.cs`
+*   `InMemoryTodoItemRepository.cs`
 
-    *   **Prompt for `InMemoryCommentRepository.cs`:**
-
-        ```
-        Create a C# class named `InMemoryCommentRepository` in the namespace `Getitdone.Service.Repositories.InMemory` that implements the `ICommentRepository` interface. Use a `ConcurrentDictionary<string, Comment>` to store the data. Implement all the methods of the interface using the in-memory dictionary.
-        Use the `Getitdone.Service.Models` namespace for the `Comment` type.
-        ```
-
-    *   **Prompt for `InMemoryLabelRepository.cs`:**
-
-        ```
-        Create a C# class named `InMemoryLabelRepository` in the namespace `Getitdone.Service.Repositories.InMemory` that implements the `ILabelRepository` interface. Use a `ConcurrentDictionary<string, Label>` to store the data. Implement all the methods of the interface using the in-memory dictionary.
-        Use the `Getitdone.Service.Models` namespace for the `Label` type.
-        ```
-
-    *   **Prompt for `InMemoryProjectRepository.cs`:**
-
-        ```
-        Create a C# class named `InMemoryProjectRepository` in the namespace `Getitdone.Service.Repositories.InMemory` that implements the `IProjectRepository` interface. Use a `ConcurrentDictionary<string, Project>` to store the project data and a `ConcurrentDictionary<string, List<Collaborator>>` to store the collaborators. Implement all the methods of the interface using the in-memory dictionaries.
-        Use the `Getitdone.Service.Models` namespace for the `Project` and `Collaborator` types.
-        ```
-
-    *   **Prompt for `InMemorySectionRepository.cs`:**
-
-        ```
-        Create a C# class named `InMemorySectionRepository` in the namespace `Getitdone.Service.Repositories.InMemory` that implements the `ISectionRepository` interface. Use a `ConcurrentDictionary<string, Section>` to store the data. Implement all the methods of the interface using the in-memory dictionary.
-        Use the `Getitdone.Service.Models` namespace for the `Section` type.
-        ```
-
-    *   **Prompt for `InMemoryTodoItemRepository.cs`:**
-
-        ```
-        Create a C# class named `InMemoryTodoItemRepository` in the namespace `Getitdone.Service.Repositories.InMemory` that implements the `ITodoItemRepository` interface. Use a `ConcurrentDictionary<string, TodoItem>` to store the data. Implement all the methods of the interface using the in-memory dictionary.
-        Use the `Getitdone.Service.Models` namespace for the `TodoItem` type.
-        ```
+These classes provide the concrete implementations for the repository interfaces, using in-memory data storage.
 
 ## Step 6: Create service layer implementations
 
-1.  **Create files:** Create the following files in the `Services` folder:
-    *   `CommentOpsOperations.cs`
-    *   `CommentsOperations.cs`
-    *   `LabelOpsOperations.cs`
-    *   `LabelsOperations.cs`
-    *   `ProjectOpsOperations.cs`
-    *   `ProjectsOperations.cs`
-    *   `SectionOpsOperations.cs`
-    *   `SectionsOperations.cs`
-    *   `SharedLabelsOperations.cs`
-    *   `TodoItemOpsOperations.cs`
-    *   `TodoItemsOperations.cs`
+The repository already contains the implementation for the service layer. The following files are located in the `Services` folder:
 
-2.  **Add code:** Use the following prompts with an AI agent to generate the code for each file:
+*   `CommentOpsOperations.cs`
+*   `CommentsOperations.cs`
+*   `LabelOpsOperations.cs`
+*   `LabelsOperations.cs`
+*   `ProjectOpsOperations.cs`
+*   `ProjectsOperations.cs`
+*   `SectionOpsOperations.cs`
+*   `SectionsOperations.cs`
+*   `SharedLabelsOperations.cs`
+*   `TodoItemOpsOperations.cs`
+*   `TodoItemsOperations.cs`
 
-    *   **Prompt for `CommentOpsOperations.cs`:**
-
-        ```
-        Create a C# class named `CommentOpsOperations` in the namespace `Getitdone.Service.Services` that implements the `ICommentOpsOperations` interface. Inject an `ICommentRepository` through the constructor. Implement all the methods of the interface, including error handling with try-catch blocks. Log exceptions to the console.
-        Use the `Getitdone.Service.Models` namespace for the model types and `Getitdone.Service` namespace for the interface.
-        ```
-
-    *   **Prompt for `CommentsOperations.cs`:**
-
-        ```
-        Create a C# class named `CommentsOperations` in the namespace `Getitdone.Service.Services` that implements the `ICommentsOperations` interface. Inject an `ICommentRepository` through the constructor. Implement all the methods of the interface, including error handling with try-catch blocks. Log exceptions to the console.
-        Use the `Getitdone.Service.Models` namespace for the model types and `Getitdone.Service` namespace for the interface.
-        ```
-
-    *   **Prompt for `LabelOpsOperations.cs`:**
-
-        ```
-        Create a C# class named `LabelOpsOperations` in the namespace `Getitdone.Service.Services` that implements the `ILabelOpsOperations` interface. Inject an `ILabelRepository` through the constructor. Implement all the methods of the interface, including error handling with try-catch blocks. Log exceptions to the console.
-        Use the `Getitdone.Service.Models` namespace for the model types and `Getitdone.Service` namespace for the interface.
-        ```
-
-    *   **Prompt for `LabelsOperations.cs`:**
-
-        ```
-        Create a C# class named `LabelsOperations` in the namespace `Getitdone.Service.Services` that implements the `ILabelsOperations` interface. Inject an `ILabelRepository` through the constructor. Implement all the methods of the interface, including error handling with try-catch blocks. Log exceptions to the console.
-        Use the `Getitdone.Service.Models` namespace for the model types and `Getitdone.Service` namespace for the interface.
-        ```
-
-    *   **Prompt for `ProjectOpsOperations.cs`:**
-
-        ```
-        Create a C# class named `ProjectOpsOperations` in the namespace `Getitdone.Service.Services` that implements the `IProjectOpsOperations` interface. Inject an `IProjectRepository` through the constructor. Implement all the methods of the interface, including error handling with try-catch blocks. Log exceptions to the console.
-        Use the `Getitdone.Service.Models` namespace for the model types and `Getitdone.Service` namespace for the interface.
-        ```
-
-    *   **Prompt for `ProjectsOperations.cs`:**
-
-        ```
-        Create a C# class named `ProjectsOperations` in the namespace `Getitdone.Service.Services` that implements the `IProjectsOperations` interface. Inject an `IProjectRepository` through the constructor. Implement all the methods of the interface, including error handling with try-catch blocks. Log exceptions to the console.
-        Use the `Getitdone.Service.Models` namespace for the model types and `Getitdone.Service` namespace for the interface.
-        ```
-
-    *   **Prompt for `SectionOpsOperations.cs`:**
-
-        ```
-        Create a C# class named `SectionOpsOperations` in the namespace `Getitdone.Service.Services` that implements the `ISectionOpsOperations` interface. Inject an `ISectionRepository` through the constructor. Implement all the methods of the interface, including error handling with try-catch blocks. Log exceptions to the console.
-        Use the `Getitdone.Service.Models` namespace for the model types and `Getitdone.Service` namespace for the interface.
-        ```
-
-    *   **Prompt for `SectionsOperations.cs`:**
-
-        ```
-        Create a C# class named `SectionsOperations` in the namespace `Getitdone.Service.Services` that implements the `ISectionsOperations` interface. Inject an `ISectionRepository` through the constructor. Implement all the methods of the interface, including error handling with try-catch blocks. Log exceptions to the console.
-        Use the `Getitdone.Service.Models` namespace for the model types and `Getitdone.Service` namespace for the interface.
-        ```
-
-    *   **Prompt for `SharedLabelsOperations.cs`:**
-
-        ```
-        Create a C# class named `SharedLabelsOperations` in the namespace `Getitdone.Service.Services` that implements the `ISharedLabelsOperations` interface. Inject an `ILabelRepository` through the constructor. Implement all the methods of the interface, including error handling with try-catch blocks. Log exceptions to the console.
-        Use the `Getitdone.Service.Models` namespace for the model types and `Getitdone.Service` namespace for the interface.
-        ```
-
-    *   **Prompt for `TodoItemOpsOperations.cs`:**
-
-        ```
-        Create a C# class named `TodoItemOpsOperations` in the namespace `Getitdone.Service.Services` that implements the `ITodoItemOpsOperations` interface. Inject an `ITodoItemRepository` through the constructor. Implement all the methods of the interface, including error handling with try-catch blocks. Log exceptions to the console.
-        Use the `Getitdone.Service.Models` namespace for the model types and `Getitdone.Service` namespace for the interface.
-        ```
-
-    *   **Prompt for `TodoItemsOperations.cs`:**
-
-        ```
-        Create a C# class named `TodoItemsOperations` in the namespace `Getitdone.Service.Services` that implements the `ITodoItemsOperations` interface. Inject an `ITodoItemRepository` through the constructor. Implement all the methods of the interface, including error handling with try-catch blocks. Log exceptions to the console.
-        Use the `Getitdone.Service.Models` namespace for the model types and `Getitdone.Service` namespace for the interface.
-        ```
+These classes implement the business logic for the API, using the repository interfaces.
 
 ## Step 7: Create controller helper
 
-1.  **Create file:** Create a file named `ControllerHelpers.cs` in the `Helpers` folder.
+The repository already contains the implementation for the controller helper. The following file is located in the `Helpers` folder:
 
-2.  **Add code:** Use the following prompt with an AI agent to generate the code for the file:
+*   `ControllerHelpers.cs`
 
-    *   **Prompt for `ControllerHelpers.cs`:**
-
-        ```
-        Create a static C# class named `ControllerHelpers` in the namespace `Getitdone.Service.Helpers`. It should have a static method named `HandleErrorResponse` that takes an `Exception` as a parameter and returns an `IActionResult`. The method should return a `NotFound` response for `KeyNotFoundException` and an `InternalServerError` response for other exceptions. Use the `Getitdone.Service.Models` namespace for the `ErrorResponse` type.
-        ```
+This class provides helper methods for handling errors in the controllers.
 
 ## Step 8: Create concrete controllers
 
-1.  **Create files:** Create the following files in the `Controllers` folder:
-    *   `CommentOpsController.cs`
-    *   `CommentsController.cs`
-    *   `LabelOpsController.cs`
-    *   `LabelsController.cs`
-    *   `ProjectOpsController.cs`
-    *   `ProjectsController.cs`
-    *   `SectionOpsController.cs`
-    *   `SectionsController.cs`
-    *   `SharedLabelsController.cs`
-    *   `TodoItemOpsController.cs`
-    *   `TodoItemsController.cs`
+The repository already contains the implementation for the concrete controllers. The following files are located in the `Controllers` folder:
 
-2.  **Add code:** For each of these files, use the following prompt with an AI, replacing `[ControllerName]` with the actual name of the controller (e.g., `CommentOpsController`):
+*   `CommentOpsController.cs`
+*   `CommentsController.cs`
+*   `LabelOpsController.cs`
+*   `LabelsController.cs`
+*   `ProjectOpsController.cs`
+*   `ProjectsController.cs`
+*   `SectionOpsController.cs`
+*   `SectionsController.cs`
+*   `SharedLabelsController.cs`
+*   `TodoItemOpsController.cs`
+*   `TodoItemsController.cs`
 
-    ```
-    Create a C# class named `[ControllerName]` in the namespace `Getitdone.Service.Controllers` that inherits from the corresponding generated controller base class (e.g., `CommentOpsOperationsControllerBase`). Inject the corresponding service interface (e.g., `ICommentOpsOperations`) through the constructor. Implement all the methods of the base class, using the injected service and the `ControllerHelpers.HandleErrorResponse` method for error handling.
-    Use the `Getitdone.Service.Models` namespace for the model types, `Getitdone.Service.Helpers` for the `ControllerHelpers` class, and `Getitdone.Service` for the service interface.
-    ```
+These classes implement the API endpoints, using the service layer and the controller helper.
 
 ## Step 9: Configure dependency injection
 
@@ -567,6 +391,47 @@ Refer to the [user-journey](../doc/user-journey.md) for details on how to genera
 *   **Output area:** The responses from the API will be displayed in the output area below the buttons.
 *   **Basic functionality:** This front-end provides basic functionality for creating and retrieving resources. It is intended for demonstration and testing purposes.
 
+## Step 12: Using the Client Example Application
+
+The `Getitdone.ClientExample` project is a C# console application that demonstrates how to use the generated client code to interact with the API. **This client code must be generated from your TypeSpec file before building this project.** This application can be used to test the API once the backend service is up and running.
+
+### Prerequisites
+
+*   Ensure that the API service is running, as described in [Step 10: Build and run the application](#step-10-build-and-run-the-application).
+
+### Running the Client
+
+1.  **Open a terminal:** Open your terminal or command prompt.
+2.  **Navigate to the client directory:** Navigate to the `Getitdone.ClientExample` directory.
+3.  **Run the application:** Run the following command:
+
+    ```bash
+    dotnet run
+    ```
+
+### Expected Output
+
+The console application will perform a series of API calls, including:
+
+*   Retrieving existing projects, sections, todo items, and labels.
+*   Creating new projects, sections, todo items, and labels.
+*   Retrieving comments for todo items.
+*   Creating new comments for todo items.
+
+The output will display the details of the retrieved and created resources, including their names and IDs.
+
+### Code Overview
+
+The `Program.cs` file in the `Getitdone.ClientExample` project demonstrates the following:
+
+*   **Creating a client instance:** It initializes a `GetitdoneClient` with the base URL of the API.
+*   **Accessing API clients:** It uses the `GetProjectsClient()`, `GetSectionsClient()`, `GetTodoItemsClient()`, `GetCommentsClient()`, and `GetLabelsClient()` methods to get specific API clients.
+*   **Making API calls:** It uses the methods of the API clients to make requests to the API, such as `GetProjectsAsync()`, `CreateSectionAsync()`, `GetTodoItemsAsync()`, etc.
+*   **Using the Model Factory:** It uses the `GetitdoneClientModelFactory` to create request objects for the API.
+*   **Handling responses:** It processes the responses from the API and prints the results to the console.
+
+This example provides a basic demonstration of how to use the generated client code to interact with the API. You can modify this code to perform more complex operations or to test specific scenarios.
+
 ## Conclusion
 
-By following this guide, you have successfully built a Todoist clone API using C# and .NET service code generated from TypeSpec.
+By following this guide, you have successfully built a Todoist clone API using C# and .NET, leveraging service code generated from TypeSpec.
