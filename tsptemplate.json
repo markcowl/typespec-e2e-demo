@@ -20,6 +20,13 @@
         },
         "message": "Please ensure dotnet SDK has been installed. Download from https://dotnet.microsoft.com/download"
       },
+      "@azure-tools/typespec-ts": {
+        "description": "Client: generate TypeScript client",
+        "options": {
+          "emitter-output-dir": "{project-root}/clients/javascript",
+          "isModularLibrary": true
+        }
+      },
       "@typespec/http-client-java": {
         "description": "Client: generate Java client",
         "options": {
