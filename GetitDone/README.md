@@ -398,6 +398,7 @@ The `Getitdone.ClientExample` project is a C# console application that demonstra
 ### Prerequisites
 
 *   Ensure that the API service is running, as described in [Step 10: Build and run the application](#step-10-build-and-run-the-application).
+*   **Ensure that the client code has been generated from your TypeSpec file.** Refer to the TypeSpec documentation for instructions on generating client code.
 
 ### Running the Client
 
@@ -431,7 +432,3 @@ The `Program.cs` file in the `Getitdone.ClientExample` project demonstrates the 
 *   **Handling responses:** It processes the responses from the API and prints the results to the console.
 
 This example provides a basic demonstration of how to use the generated client code to interact with the API. You can modify this code to perform more complex operations or to test specific scenarios.
-
-## Conclusion
-
-By following this guide, you have successfully built a Todoist clone API using C# and .NET, leveraging service code generated from TypeSpec.

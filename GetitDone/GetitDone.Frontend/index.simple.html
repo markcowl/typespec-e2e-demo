@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get It Done - Todo App</title>
+    <style>
+        :root {
+            --background-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --primary-color: #64b5f6;
+            --secondary-color: #ffab40;
+            --accent-color: #4caf50;
+            --hover-color: #333333;
+            --border-color: #333333;
+        }
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        .container {
+            display: flex;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            max-width: 1200px; /* Increased max-width */
+            margin: 0 auto;
+        }
+        .form-container {
+            flex: 1;
+            padding-right: 20px;
+        }
+        h2 {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        textarea,
+        select {
+            width: calc(100% - 12px);
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-bottom: 5px;
+            background-color: #444;
+            color: var(--text-color);
+        }
+        button {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: var(--hover-color);
+        }
+        .output {
+            flex: 0 0 50%;
+            margin-top: 0;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #444;
+            white-space: normal;
+            overflow-y: auto; /* Add scroll if content overflows */
+            max-height: 80vh; /* Limit max height to 80% of viewport height */
+        }
+        .output-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .output-list li {
+            background-color: #555;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+        .output-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: #555;
+        }
+        .output-item h3 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 1.2em;
+        }
+        .output-item p {
+            margin: 0;
+            padding-left: 10px;
+        }
+        .output-item ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .output-item li {
+            margin-bottom: 5px;
+        }
+        .delete-button {
+            background-color: #d9534f;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        .delete-button:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2>Create Project</h2>
+            <div class="form-group">
+                <label for="projectName">Project Name:</label>
+                <input type="text" id="projectName" placeholder="Enter project name">
+            </div>
+            <div class="form-group">
+                <label for="projectColor">Project Color:</label>
+                <input type="text" id="projectColor" placeholder="Enter color (e.g., #FF0000)">
+            </div>
+            <button onclick="createProject()">Create Project</button>
+
+            <h2>Create Section</h2>
+            <div class="form-group">
+                <label for="sectionName">Section Name:</label>
+                <input type="text" id="sectionName" placeholder="Enter section name">
+            </div>
+            <div class="form-group">
+                <label for="projectIdForSection">Project ID:</label>
+                <input type="text" id="projectIdForSection" placeholder="Enter project ID">
+            </div>
+            <button onclick="createSection()">Create Section</button>
+
+            <h2>Create Todo Item</h2>
+            <div class="form-group">
+                <label for="todoContent">Todo Content:</label>
+                <input type="text" id="todoContent" placeholder="Enter todo content">
+            </div>
+            <div class="form-group">
+                <label for="todoDescription">Todo Description:</label>
+                <textarea id="todoDescription" placeholder="Enter todo description"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="projectIdForTodo">Project ID:</label>
+                <input type="text" id="projectIdForTodo" placeholder="Enter project ID">
+            </div>
+            <div class="form-group">
+                <label for="sectionIdForTodo">Section ID:</label>
+                <input type="text" id="sectionIdForTodo" placeholder="Enter section ID">
+            </div>
+            <button onclick="createTodoItem()">Create Todo Item</button>
+
+            <h2>Create Label</h2>
+            <div class="form-group">
+                <label for="labelName">Label Name:</label>
+                <input type="text" id="labelName" placeholder="Enter label name">
+            </div>
+            <div class="form-group">
+                <label for="labelColor">Label Color:</label>
+                <input type="text" id="labelColor" placeholder="Enter color (e.g., #00FF00)">
+            </div>
+            <button onclick="createLabel()">Create Label</button>
+
+            <h2>Get All Todo Items</h2>
+            <button onclick="getAllTodoItems()">Get All Todo Items</button>
+
+            <h2>Get All Projects</h2>
+            <button onclick="getAllProjects()">Get All Projects</button>
+
+            <h2>Get All Labels</h2>
+            <button onclick="getAllLabels()">Get All Labels</button>
+
+            <h2>Get Sections for Project</h2>
+            <div class="form-group">
+                <label for="projectIdForSections">Project ID:</label>
+                <input type="text" id="projectIdForSections" placeholder="Enter project ID">
+            </div>
+            <button onclick="getSectionsForProject()">Get Sections</button>
+
+            <h2>Delete Project</h2>
+            <div class="form-group">
+                <label for="deleteProjectId">Project ID:</label>
+                <input type="text" id="deleteProjectId" placeholder="Enter project ID to delete">
+            </div>
+            <button onclick="deleteProject()">Delete Project</button>
+
+            <h2>Delete Section</h2>
+            <div class="form-group">
+                <label for="deleteSectionId">Section ID:</label>
+                <input type="text" id="deleteSectionId" placeholder="Enter section ID to delete">
+            </div>
+            <button onclick="deleteSection()">Delete Section</button>
+
+            <h2>Delete Todo Item</h2>
+            <div class="form-group">
+                <label for="deleteTodoItemId">Todo Item ID:</label>
+                <input type="text" id="deleteTodoItemId" placeholder="Enter todo item ID to delete">
+            </div>
+            <button onclick="deleteTodoItem()">Delete Todo Item</button>
+
+            <h2>Delete Label</h2>
+            <div class="form-group">
+                <label for="deleteLabelId">Label ID:</label>
+                <input type="text" id="deleteLabelId" placeholder="Enter label ID to delete">
+            </div>
+            <button onclick="deleteLabel()">Delete Label</button>
+        </div>
+        <div class="output">
+            <ul id="output-list" class="output-list"></ul>
+        </div>
+    </div>
+
+    <script>
+        const apiUrl = 'http://localhost:5091'; // Replace with your API URL
+
+        async function createProject() {
+            const projectName = document.getElementById('projectName').value;
+            const projectColor = document.getElementById('projectColor').value;
+
+            const data = {
+                name: projectName,
+                color: projectColor,
+                parentId: null,
+                order: 1,
+                isFavorite: false
+            };
+
+            await makeApiRequest('/projects', 'POST', data);
+        }
+
+        async function createSection() {
+            const sectionName = document.getElementById('sectionName').value;
+            const projectId = document.getElementById('projectIdForSection').value;
+
+            const data = {
+                name: sectionName,
+                projectId: projectId,
+                order: 1
+            };
+
+            await makeApiRequest('/sections', 'POST', data);
+        }
+
+        async function createTodoItem() {
+            const todoContent = document.getElementById('todoContent').value;
+            const todoDescription = document.getElementById('todoDescription').value;
+            const projectId = document.getElementById('projectIdForTodo').value;
+            const sectionId = document.getElementById('sectionIdForTodo').value;
+
+            const data = {
+                content: todoContent,
+                description: todoDescription,
+                due: {
+                    date: null,
+                    isRecurring: false,
+                    datetime: null,
+                    string: null,
+                    timezone: null
+                },
+                labels: [],
+                priority: 1,
+                parentId: null,
+                order: 1,
+                projectId: projectId,
+                sectionId: sectionId,
+                assigneeId: null
+            };
+
+            await makeApiRequest('/todoitems', 'POST', data);
+        }
+
+        async function createLabel() {
+            const labelName = document.getElementById('labelName').value;
+            const labelColor = document.getElementById('labelColor').value;
+
+            const data = {
+                name: labelName,
+                color: labelColor,
+                order: 1,
+                isFavorite: true
+            };
+
+            await makeApiRequest('/labels', 'POST', data);
+        }
+
+        async function getAllTodoItems() {
+            await makeApiRequest('/todoitems', 'GET');
+        }
+
+        async function getAllProjects() {
+            await makeApiRequest('/projects', 'GET');
+        }
+
+        async function getAllLabels() {
+            await makeApiRequest('/labels', 'GET');
+        }
+
+        async function getSectionsForProject() {
+            const projectId = document.getElementById('projectIdForSections').value;
+            await makeApiRequest(`/sections?project_id=${projectId}`, 'GET');
+        }
+
+        async function deleteProject() {
+            const projectId = document.getElementById('deleteProjectId').value;
+            await makeApiRequest(`/projects/${projectId}`, 'DELETE');
+        }
+
+        async function deleteSection() {
+            const sectionId = document.getElementById('deleteSectionId').value;
+            await makeApiRequest(`/sections/${sectionId}`, 'DELETE');
+        }
+
+        async function deleteTodoItem() {
+            const todoItemId = document.getElementById('deleteTodoItemId').value;
+            await makeApiRequest(`/todoitems/${todoItemId}`, 'DELETE');
+        }
+
+        async function deleteLabel() {
+            const labelId = document.getElementById('deleteLabelId').value;
+            await makeApiRequest(`/labels/${labelId}`, 'DELETE');
+        }
+
+        async function makeApiRequest(endpoint, method = 'GET', body = null) {
+            const outputDiv = document.getElementById('output-list');
+            outputDiv.innerHTML = 'Loading...';
+
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+
+                const response = await fetch(apiUrl + endpoint, options);
+                let data;
+                if (response.ok && response.status !== 204) {
+                    data = await response.json();
+                } else {
+                    data = { message: `Request ${method} to ${endpoint} was successful` };
+                }
+
+                outputDiv.innerHTML = ''; // Clear previous output
+                if (Array.isArray(data)) {
+                    data.forEach(item => {
+                        const listItem = document.createElement('li');
+                        listItem.classList.add('output-item');
+                        listItem.innerHTML = formatOutputItem(item);
+                        outputDiv.appendChild(listItem);
+                    });
+                } else if (typeof data === 'object' && data !== null) {
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('output-item');
+                    listItem.innerHTML = formatOutputItem(data);
+                    outputDiv.appendChild(listItem);
+                } else {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = JSON.stringify(data, null, 2);
+                    outputDiv.appendChild(listItem);
+                }
+
+            } catch (error) {
+                outputDiv.innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        function formatOutputItem(item) {
+            let output = '';
+            if (item.id) {
+                output += `<h3>ID: ${item.id}</h3>`;
+            }
+            for (const key in item) {
+                if (item.hasOwnProperty(key) && key !== 'id') {
+                    if (Array.isArray(item[key])) {
+                        output += `<p><strong>${key}:</strong></p><ul>`;
+                        item[key].forEach(arrayItem => {
+                            output += `<li>${JSON.stringify(arrayItem)}</li>`;
+                        });
+                        output += `</ul>`;
+                    } else if (typeof item[key] === 'object' && item[key] !== null) {
+                        output += `<p><strong>${key}:</strong> ${JSON.stringify(item[key])}</p>`;
+                    } else {
+                        output += `<p><strong>${key}:</strong> ${item[key]}</p>`;
+                    }
+                }
+            }
+            return output;
+        }
+    </script>
+</body>
+</html>
