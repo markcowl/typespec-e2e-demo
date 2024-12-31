@@ -88,6 +88,68 @@ The ultimate goal is to eliminate or significantly simplify these steps by enabl
 
 - node/express: TBA
 
-## VSCode
+## TypeSpec Extension for VS Code
 
-TBA
+### Overview of the extension
+
+The extension is focusing on improving the API/SDK producer's experience in prototyping API using TypeSpec.  It supports IntelliSense for authoring TypeSpec and provides interactive guidance within VS Code IDE for:
+
+- Scaffolding TypeSpec projects using various templates
+- Generating OpenAPI 3.0 from TypeSpec
+- Generating client code from TypeSpec
+- Generating server stub from TypeSpec
+
+You can quickly start and explore TypeSpec's full capabilities within TypeSpec extension for VS Code.
+
+### Installation
+
+- Install prerequisites
+  - Install node.js 20 LTS or above in an **administrative** shell, verify that `node --version` and `npm --version` run in a command prompt.
+  - Install TypeSpec Compiler in **global** mode.
+
+    ```bash
+    npm install -g @typespec/compiler
+    ```
+
+- Install the extension
+
+Note:
+
+- If TypeSpec Compiler is not installed or the version installed has reached its end of service, users will be prompted to install the latest version when the extension is loaded upon creating a TypeSpec project.
+- If `node --version` and `npm --version` don't run correctly in command prompt, indicating a problem with Node.js installation, it causes errors when installing TypeSpec Compiler.
+
+### Project Scaffolding
+
+To create a TypeSpec Project in VS Code, you click “Create TypeSpec Project” in the EXPLORE sidebar.
+
+![Create TypeSpec Project in Side Bar](./media/create-typespec-project.png)
+
+After selecting a project root folder, you provide the required inputs via Quick Picks, the same as using the CLI - “tsp init”. This process will establish a TypeSpec project with a structure like this:
+
+![TypeSpec Project Structure](./media/typespec-project-folder-structure.png)
+
+Once your project is set up, you can prototype APIs using TypeSpec with IntelliSense features like code completion, parameter info, quick info, and member lists.
+
+### Generate the OpenAPI Document
+
+After finishing your TypeSpec specification, you can generate an OpenAPI document from it. To do this, right-click on a .tsp file to open the Context Menu, then select “Generate from TypeSpec” to start the generation process.
+
+![Context Menu for TypeSpec](./media/context-menu-for-typespec.png)
+
+When you select “OpenAPI” from the emitter types and choose “OpenAPI 3 – Generate OpenAPI 3 document by @typespec/openapi3” in the subsequent Quick Pick, the TypeSpec compiler will run in the background to generate a new directory named “schema\OpenAPI3”. Utilizing the versioning library, the OpenAPI document will be created for the specified API version. The file produced by the OpenAPI 3 emitter will be named `openapi.<version>.yaml`.
+
+![Generate OpenAPI 3 Document](./media/generate-openapi-document.png)
+
+### Generate the Client Code and the Server Stub
+
+You can also generate client codes and server stubs of a specified language from you TypeSpec specification.  Again, to do this, right-click on a .tsp file to open the Context Menu, select “Generate from TypeSpec” to start the generation process. For example, When you select “Client Code” from the Emitter Types and choose “.NET – Generate .Net client code by @typespec/http-client-csharp” in the subsequent Quick Pick, the TypeSpec compiler will run in the background.
+
+TypeSpec Compiler will run in the background to generate a new directory name "client\<language>".
+
+![Generate Client Code](./media/generate-client-code.png)
+
+#### Compile Code Generated
+
+After generating code, opening a source file will prompt you to install the recommended language extension. You can then edit and compile the code with the extension's help.
+
+![Extension for CSharp](./media/vscode-extension-for-csharp.png)
