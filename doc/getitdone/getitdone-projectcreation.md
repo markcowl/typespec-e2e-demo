@@ -29,142 +29,6 @@ Please note, this project is only demonstrating a clone of the backend API and d
 
 The TypeSpec file was itself also generated with the help of AI - I used Windows Copilot to scrape the API documentation, Azure OpenAI o1-preview to generate an OpenAPI spec from the scraped documentation, then to generate the TypeSpec file from the OpenAPI spec. I then used GitHub Copilot in VS Code to work through the various build issues in the original TypeSpec file, and once the file was clean, I was able to generate the service stub code. The repository contains the full implementation for the API, and this guide will focus on using the TypeSpec-generated stub code with that implementation.
 
-## Project Overview
-
-The project repository includes all necessary files and implementations for a proof-of-concept of a C# webapi backend, using local memory as the backing memory storage and the service stub code generated from TypeSpec. Below is an overview of the included components and their locations within the project.
-
-### Repository Interfaces
-
-The `Repositories` folder contains the following repository interfaces:
-
-* `ICommentRepository.cs`
-* `ILabelRepository.cs`
-* `IProjectRepository.cs`
-* `ISectionRepository.cs`
-* `ITodoItemRepository.cs`
-
-These interfaces define the contracts for interacting with the data layer.
-
-### In-Memory Repository Implementations
-
-The `Repositories/InMemory` folder contains the in-memory repository implementations:
-
-* `InMemoryCommentRepository.cs`
-* `InMemoryLabelRepository.cs`
-* `InMemoryProjectRepository.cs`
-* `InMemorySectionRepository.cs`
-* `InMemoryTodoItemRepository.cs`
-
-These classes provide concrete implementations for the repository interfaces using in-memory data storage.
-
-### Service Layer Implementations
-
-The `Services` folder contains the service layer implementations:
-
-* `CommentOpsOperations.cs`
-* `CommentsOperations.cs`
-* `LabelOpsOperations.cs`
-* `LabelsOperations.cs`
-* `ProjectOpsOperations.cs`
-* `ProjectsOperations.cs`
-* `SectionOpsOperations.cs`
-* `SectionsOperations.cs`
-* `SharedLabelsOperations.cs`
-* `TodoItemOpsOperations.cs`
-* `TodoItemsOperations.cs`
-
-These classes implement the business logic for the API.
-
-### Controller Helper
-
-The `Helpers` folder contains the controller helper:
-
-* `ControllerHelpers.cs`
-
-This class provides helper methods for handling errors in the controllers.
-
-### Concrete Controllers
-
-The `Controllers` folder contains the concrete controllers:
-
-* `CommentOpsController.cs`
-* `CommentsController.cs`
-* `LabelOpsController.cs`
-* `LabelsController.cs`
-* `ProjectOpsController.cs`
-* `ProjectsController.cs`
-* `SectionOpsController.cs`
-* `SectionsController.cs`
-* `SharedLabelsController.cs`
-* `TodoItemOpsController.cs`
-* `TodoItemsController.cs`
-
-These classes implement the API endpoints using the service layer and the controller helper.
-
-### Dependency Injection Configuration
-
-The `Program.cs` file includes the necessary code to configure dependency injection for the repositories and services. Here is the relevant code snippet:
-
-```csharp
-using Getitdone.Service.Repositories;
-using Getitdone.Service.Repositories.InMemory;
-using Getitdone.Service.Services;
-using Getitdone.Service;
-
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-
-// Add CORS configuration
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
-});
-
-// Register Repositories
-builder.Services.AddSingleton<ICommentRepository, InMemoryCommentRepository>();
-builder.Services.AddSingleton<ILabelRepository, InMemoryLabelRepository>();
-builder.Services.AddSingleton<IProjectRepository, InMemoryProjectRepository>();
-builder.Services.AddSingleton<ISectionRepository, InMemorySectionRepository>();
-builder.Services.AddSingleton<ITodoItemRepository, InMemoryTodoItemRepository>();
-
-// Register Services
-builder.Services.AddScoped<ICommentOpsOperations, CommentOpsOperations>();
-builder.Services.AddScoped<ICommentsOperations, CommentsOperations>();
-builder.Services.AddScoped<ILabelOpsOperations, LabelOpsOperations>();
-builder.Services.AddScoped<ILabelsOperations, LabelsOperations>();
-builder.Services.AddScoped<IProjectOpsOperations, ProjectOpsOperations>();
-builder.Services.AddScoped<IProjectsOperations, ProjectsOperations>();
-builder.Services.AddScoped<ISectionOpsOperations, SectionOpsOperations>();
-builder.Services.AddScoped<ISectionsOperations, SectionsOperations>();
-builder.Services.AddScoped<ISharedLabelsOperations, SharedLabelsOperations>();
-builder.Services.AddScoped<ITodoItemOpsOperations, TodoItemOpsOperations>();
-builder.Services.AddScoped<ITodoItemsOperations, TodoItemsOperations>();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-app.UseCors();
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
-```
-
-This configuration ensures that the repositories and services are properly registered with the dependency injection container.
-
-
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
@@ -175,7 +39,7 @@ Before you begin, ensure you have the following installed:
 *   **C# Extension for VS Code:** Install the C# extension in VS Code.
 *   **Thunder Client Extension for VS Code:** Install the Thunder Client extension in VS Code.
 
-## Step 1: Generate service stub code from TypeSpec
+## Step 0: Generate service stub code from TypeSpec
 
 This step will generate the basic structure and interfaces for your API. The implementation will be provided by the existing code in the repository.
 
@@ -208,28 +72,176 @@ GetitDone/
 ```
 
 
-## Step 2: Add generated stub code to existing webapi service project
+## Step 1: Create a new asp.net core web API project
 
-Copy the `generated` files folder from `GetitDone\servers\aspnet\generated`) to the `GetitDone.Service` folder. Your `GetitDone.Service` folder should now look like this:
+1.  **Open a terminal:** Open your terminal or command prompt.
+2.  **Navigate to a directory:** Navigate to the directory where you want to create your project.
+3.  **Create a top-level directory:** Create a new directory for your project named `Getitdone`.
+4.  **Create the .NET project:** `cd` into the `GetitDone` directory and run the following command:
+
+    ```bash
+    dotnet new webapi -o Getitdone.Service
+    ```
+
+    This command creates a new ASP.NET Core Web API project in a folder named `Getitdone.Service`.
+
+## Step 2: Organize the project structure
+
+1.  **Open the project:** Open the `Getitdone.Service` folder in VS Code.
+2.  **Create folders:** Create the following folders within the project:
+    *   `Controllers`
+    *   `Helpers`
+    *   `Repositories`
+    *   `Repositories/InMemory`
+    *   `Services`
+
+## Step 3: Add generated stub code
+
+1.  **Copy generated files:** Copy the `generated` files folder from your TypeSpec project (located under `servers\aspnet\generated`) to the `GetitDone.Service` folder. Your `GetitDone.Service` folder should now look like this:
 
     ```text
-GetitDone.Service/
-┣ Controllers/
-┣ generated/
-┣ Helpers/
-┣ Properties/
-┣ Repositories/
-┣ Services/
-┣ appsettings.Development.json
-┣ appsettings.json
-┣ Getitdone.Service.csproj
-┣ Getitdone.Service.http
-┗ Program.cs
+    GetitDone.Service/
+    ┣ Controllers/
+    ┣ generated/
+    ┣ Helpers/
+    ┣ Repositories/
+    ┣ Services/
+    ┣ Getitdone.Service.csproj
+    ┗ Program.cs
     ```
-This `generated` folder contains the stub code, including the controller base classes, generated from your TypeSpec file.
+    This `generated` folder contains the stub code, including the controller base classes, generated from your TypeSpec file.
 
+## Step 4: Create repository interfaces
 
-## Step 3: Build and run the application
+The repository already contains the implementation for the repository interfaces. The following files are located in the `Repositories` folder:
+
+*   `ICommentRepository.cs`
+*   `ILabelRepository.cs`
+*   `IProjectRepository.cs`
+*   `ISectionRepository.cs`
+*   `ITodoItemRepository.cs`
+
+These interfaces define the contracts for interacting with the data layer.
+
+## Step 5: Create in-memory repository implementations
+
+The repository already contains the implementation for the in-memory repositories. The following files are located in the `Repositories/InMemory` folder:
+
+*   `InMemoryCommentRepository.cs`
+*   `InMemoryLabelRepository.cs`
+*   `InMemoryProjectRepository.cs`
+*   `InMemorySectionRepository.cs`
+*   `InMemoryTodoItemRepository.cs`
+
+These classes provide the concrete implementations for the repository interfaces, using in-memory data storage.
+
+## Step 6: Create service layer implementations
+
+The repository already contains the implementation for the service layer. The following files are located in the `Services` folder:
+
+*   `CommentOpsOperations.cs`
+*   `CommentsOperations.cs`
+*   `LabelOpsOperations.cs`
+*   `LabelsOperations.cs`
+*   `ProjectOpsOperations.cs`
+*   `ProjectsOperations.cs`
+*   `SectionOpsOperations.cs`
+*   `SectionsOperations.cs`
+*   `SharedLabelsOperations.cs`
+*   `TodoItemOpsOperations.cs`
+*   `TodoItemsOperations.cs`
+
+These classes implement the business logic for the API, using the repository interfaces.
+
+## Step 7: Create controller helper
+
+The repository already contains the implementation for the controller helper. The following file is located in the `Helpers` folder:
+
+*   `ControllerHelpers.cs`
+
+This class provides helper methods for handling errors in the controllers.
+
+## Step 8: Create concrete controllers
+
+The repository already contains the implementation for the concrete controllers. The following files are located in the `Controllers` folder:
+
+*   `CommentOpsController.cs`
+*   `CommentsController.cs`
+*   `LabelOpsController.cs`
+*   `LabelsController.cs`
+*   `ProjectOpsController.cs`
+*   `ProjectsController.cs`
+*   `SectionOpsController.cs`
+*   `SectionsController.cs`
+*   `SharedLabelsController.cs`
+*   `TodoItemOpsController.cs`
+*   `TodoItemsController.cs`
+
+These classes implement the API endpoints, using the service layer and the controller helper.
+
+## Step 9: Configure dependency injection
+
+1.  **Open `Program.cs`:** Open the `Program.cs` file in your project.
+2.  **Add DI registrations:** Add the following code to register the repositories and services with the dependency injection container:
+
+    ```csharp
+    using Getitdone.Service.Repositories;
+    using Getitdone.Service.Repositories.InMemory;
+    using Getitdone.Service.Services;
+    using Getitdone.Service;
+
+    var builder = WebApplication.CreateBuilder(args);
+
+    // Add services to the container.
+    builder.Services.AddControllers();
+    builder.Services.AddEndpointsApiExplorer();
+
+    // Add CORS configuration
+    builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+    });
+
+    // Register Repositories
+    builder.Services.AddSingleton<ICommentRepository, InMemoryCommentRepository>();
+    builder.Services.AddSingleton<ILabelRepository, InMemoryLabelRepository>();
+    builder.Services.AddSingleton<IProjectRepository, InMemoryProjectRepository>();
+    builder.Services.AddSingleton<ISectionRepository, InMemorySectionRepository>();
+    builder.Services.AddSingleton<ITodoItemRepository, InMemoryTodoItemRepository>();
+
+    // Register Services
+    builder.Services.AddScoped<ICommentOpsOperations, CommentOpsOperations>();
+    builder.Services.AddScoped<ICommentsOperations, CommentsOperations>();
+    builder.Services.AddScoped<ILabelOpsOperations, LabelOpsOperations>();
+    builder.Services.AddScoped<ILabelsOperations, LabelsOperations>();
+    builder.Services.AddScoped<IProjectOpsOperations, ProjectOpsOperations>();
+    builder.Services.AddScoped<IProjectsOperations, ProjectsOperations>();
+    builder.Services.AddScoped<ISectionOpsOperations, SectionOpsOperations>();
+    builder.Services.AddScoped<ISectionsOperations, SectionsOperations>();
+    builder.Services.AddScoped<ISharedLabelsOperations, SharedLabelsOperations>();
+    builder.Services.AddScoped<ITodoItemOpsOperations, TodoItemOpsOperations>();
+    builder.Services.AddScoped<ITodoItemsOperations, TodoItemsOperations>();
+
+    var app = builder.Build();
+
+    // Configure the HTTP request pipeline.
+    app.UseCors();
+
+    app.UseHttpsRedirection();
+
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.Run();
+    ```
+
+## Step 10: Build and run the application
 
 1.  **Open a terminal:** Open your terminal or command prompt.
 2.  **Navigate to the project directory:** Navigate to the `Getitdone.Service` directory.
@@ -245,9 +257,9 @@ This `generated` folder contains the stub code, including the controller base cl
     dotnet run
     ```
 
-    The console output will display the base URL where your API is running (e.g., `http://localhost:5091`).
+    The console output will display the base URL where your API is running (e.g., `http://localhost:5000` or `https://localhost:7000`).
 
-## Step 4: Test the API with thunder client and a simple html front-end
+## Step 11: Test the API with thunder client and a simple html front-end
 
 ### Using thunder client
 
@@ -256,7 +268,7 @@ This `generated` folder contains the stub code, including the controller base cl
 
     *   **Create a new project:**
         *   **Method:** `POST`
-        *   **URL:** `http://localhost:5091/projects` (or your base URL)
+        *   **URL:** `http://localhost:5000/projects` (or your base URL)
         *   **Headers:** `Content-Type: application/json`
         *   **Body:**
 
@@ -274,12 +286,12 @@ This `generated` folder contains the stub code, including the controller base cl
 
     *   **Get all projects:**
         *   **Method:** `GET`
-        *   **URL:** `http://localhost:5091/projects`
+        *   **URL:** `http://localhost:5000/projects`
         *   **Verify:** `200 OK` status code and a JSON body with an array of projects.
 
     *   **Create a new section:**
         *   **Method:** `POST`
-        *   **URL:** `http://localhost:5091/sections`
+        *   **URL:** `http://localhost:5000/sections`
         *   **Headers:** `Content-Type: application/json`
         *   **Body:**
 
@@ -296,12 +308,12 @@ This `generated` folder contains the stub code, including the controller base cl
 
     *   **Get all sections for a project:**
         *   **Method:** `GET`
-        *   **URL:** `http://localhost:5091/sections?project_id={project_id}` (Replace `{project_id}` with the project ID)
+        *   **URL:** `http://localhost:5000/sections?project_id={project_id}` (Replace `{project_id}` with the project ID)
         *   **Verify:** `200 OK` status code and a JSON body with an array of sections.
 
     *   **Create a new todo item:**
         *   **Method:** `POST`
-        *   **URL:** `http://localhost:5091/todoitems`
+        *   **URL:** `http://localhost:5000/todoitems`
         *   **Headers:** `Content-Type: application/json`
         *   **Body:**
 
@@ -331,12 +343,12 @@ This `generated` folder contains the stub code, including the controller base cl
 
     *   **Get all todo items:**
         *   **Method:** `GET`
-        *   **URL:** `http://localhost:5091/todoitems`
+        *   **URL:** `http://localhost:5000/todoitems`
         *   **Verify:** `200 OK` status code and a JSON body with an array of todo items.
 
     *   **Create a new label:**
         *   **Method:** `POST`
-        *   **URL:** `http://localhost:5091/labels`
+        *   **URL:** `http://localhost:5000/labels`
         *   **Headers:** `Content-Type: application/json`
         *   **Body:**
 
@@ -353,12 +365,12 @@ This `generated` folder contains the stub code, including the controller base cl
 
     *   **Get all labels:**
         *   **Method:** `GET`
-        *   **URL:** `http://localhost:5091/labels`
+        *   **URL:** `http://localhost:5000/labels`
         *   **Verify:** `200 OK` status code and a JSON body with an array of labels.
 
     *   **Update a todo item with a label:**
         *   **Method:** `POST`
-        *   **URL:** `http://localhost:5091/todoitems/{todoitem_id}` (Replace `{todoitem_id}` with the todo item ID)
+        *   **URL:** `http://localhost:5000/todoitems/{todoitem_id}` (Replace `{todoitem_id}` with the todo item ID)
         *   **Headers:** `Content-Type: application/json`
         *   **Body:**
 
@@ -388,13 +400,13 @@ This `generated` folder contains the stub code, including the controller base cl
 
     *   **Get a todo item:**
         *   **Method:** `GET`
-        *   **URL:** `http://localhost:5091/todoitems/{todoitem_id}` (Replace `{todoitem_id}` with the todo item ID)
+        *   **URL:** `http://localhost:5000/todoitems/{todoitem_id}` (Replace `{todoitem_id}` with the todo item ID)
         *   **Verify:** `200 OK` status code and a JSON body with the todo item.
 
 ### Using the simple html front-end
 
-1.  **Locate `index.simple.html`:** The `index.simple.html` file is located in the `Getitdone.Frontend` folder within your project.
-2.  **Open in browser:** Open the `index.simple.html` file in your web browser. You can do this by right-clicking the file in VS Code, selecting "Reveal in File Explorer", then double-clicking on the file to open it in your browser.
+1.  **Locate `index.html`:** The `index.html` file is located in the `Getitdone.Frontend` folder within your project.
+2.  **Open in browser:** Open the `index.html` file in your web browser. You can do this by right-clicking the file in VS Code, selecting "Reveal in File Explorer", then double-clicking on the file to open it in your browser.
 3.  **Interact with the API:**
     *   Enter data into the input fields.
     *   Click the buttons to trigger API requests.
@@ -402,32 +414,26 @@ This `generated` folder contains the stub code, including the controller base cl
 
 **Key points for using the front-end:**
 
-*   **API URL:** Ensure that the `apiUrl` variable in the `index.simple.html` file (located within the `<script>` tag) is set to the correct base URL where your API is running (e.g., `http://localhost:5091`). You can find this URL in the console output when you run your API using `dotnet run`.
+*   **API URL:** Ensure that the `apiUrl` variable in the `index.html` file (located within the `<script>` tag) is set to the correct base URL where your API is running (e.g., `http://localhost:5000`, `https://localhost:7000`, or `http://localhost:5091`). You can find this URL in the console output when you run your API using `dotnet run`.
 *   **Input fields:** Use the input fields to provide data for creating projects, sections, todo items, and labels.
 *   **Buttons:** Click the buttons to trigger the corresponding API requests.
-*   **Output area:** The responses from the API will be displayed in the output area on the right of the screen.
+*   **Output area:** The responses from the API will be displayed in the output area below the buttons.
 *   **Basic functionality:** This front-end provides basic functionality for creating and retrieving resources. It is intended for demonstration and testing purposes.
 
-## Step 5: Using the Client Example Application
+## Step 12: Using the Client Example Application
 
-The `Getitdone.ClientExample` project is a console application that demonstrates how to use the generated C# client code to interact with the API. **The client code must be generated from your TypeSpec file before building this project, as described in step 1.** This application can be used to test the API once the backend service is up and running.
+The `Getitdone.ClientExample` project is a C# console application that demonstrates how to use the generated client code to interact with the API. **This client code must be generated from your TypeSpec file before building this project.** This application can be used to test the API once the backend service is up and running.
 
 ### Prerequisites
 
-*   Ensure that the API service is running, as described in [Step 3: Build and run the application](#step-3-build-and-run-the-application).
-*   **Ensure that the client code has been generated from your TypeSpec file.** 
-
-### Building the Client
-
-In a terminal, navigate to the `Getitdone\clients\csharp\` directory. Run the following command to build the client example application:
-
-```bash
-dotnet build
-```
+*   Ensure that the API service is running, as described in [Step 10: Build and run the application](#step-10-build-and-run-the-application).
+*   **Ensure that the client code has been generated from your TypeSpec file.** Refer to the TypeSpec documentation for instructions on generating client code.
 
 ### Running the Client
 
-In your terminal, navigate to the `Getitdone.ClientExample` directory and run the following command:
+1.  **Open a terminal:** Open your terminal or command prompt.
+2.  **Navigate to the client directory:** Navigate to the `Getitdone.ClientExample` directory.
+3.  **Run the application:** Run the following command:
 
     ```bash
     dotnet run
