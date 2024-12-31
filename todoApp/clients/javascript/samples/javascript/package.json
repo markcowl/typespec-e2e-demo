@@ -1,0 +1,15 @@
+{
+  "name": "samples",
+  "version": "1.0.0",
+  "scripts": {
+    "sample": "node todoItemSamples.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@notabrand/todo-non-branded": "../..",
+    "dotenv": "latest"
+  }
+}

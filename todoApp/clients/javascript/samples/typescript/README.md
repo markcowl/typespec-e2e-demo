@@ -19,7 +19,7 @@ npm install -g typescript
 
 To run the samples using the grenerated code:
 
-1. Build grenerated code in the `petstore/clients/javascript` folder:
+1. Build grenerated code in the `todoApp/clients/javascript` folder:
 
 ```bash
 npm install && npm run build
@@ -38,7 +38,7 @@ npm run build
 3. Run the server.
 
 ```bash
-dotnet run --project <RepoRoot>/petstore/servers/aspnet/petstore.csproj
+dotnet run --project <RepoRoot>/todoApp/servers/aspnet/Todo.csproj
 ```
 
 4. Edit the file `sample.env`, adding the correct variables. Then rename the file from `sample.env` to just `.env`. The sample programs will read this file automatically.

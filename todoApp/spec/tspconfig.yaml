@@ -5,6 +5,7 @@ emit:
  - "@typespec/http-client-java"
 #  - "@typespec/http-server-javascript" # js server gen throws error: Error: Unimplemented: new form of multipart requests
  - "@typespec/http-client-python"
+ - "@azure-tools/typespec-ts"
 options:
   "@typespec/openapi3":
     emitter-output-dir: "{project-root}/../openapi3"
@@ -19,3 +20,8 @@ options:
     emitter-output-dir: "{project-root}/../clients/java"
   "@typespec/http-client-python":
     emitter-output-dir: "{project-root}/../clients/python"
+  "@azure-tools/typespec-ts":
+    isModularLibrary: true
+    "emitter-output-dir": "{project-root}/../clients/javascript"
+    packageDetails:
+      name: "@notabrand/todo-non-branded"

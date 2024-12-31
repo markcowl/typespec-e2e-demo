@@ -4,14 +4,14 @@
   "scripts": {
     "build": "tsc",
     "prebuild": "rimraf dist/",
-    "sample": "node dist/petOperations.js"
+    "sample": "node dist/todoItemSamples.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@unbranded/petstore": "../..",
+    "@notabrand/todo-non-branded": "../..",
     "dotenv": "latest"
   },
   "devDependencies": {

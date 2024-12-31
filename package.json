@@ -10,7 +10,7 @@
     "@typespec/http-server-csharp": "https://artprodcus3.artifacts.visualstudio.com/A0fb41ef4-5012-48a9-bf39-4ee3de03ee35/29ec6040-b234-4e31-b139-33dc4287b756/_apis/artifact/cGlwZWxpbmVhcnRpZmFjdDovL2F6dXJlLXNkay9wcm9qZWN0SWQvMjllYzYwNDAtYjIzNC00ZTMxLWIxMzktMzNkYzQyODdiNzU2L2J1aWxkSWQvNDQyNzY3NC9hcnRpZmFjdE5hbWUvcGFja2FnZXM1/content?format=file&subPath=%2Ftypespec-http-server-csharp-0.58.0-alpha.7-pr-5417.20241220.7.tgz",
     "@typespec/http-server-javascript": "^0.58.0-alpha.6",
     "@typespec/http-client-java": "^0.1.5",
-    "@azure-tools/typespec-ts": "^0.36.0",
+    "@azure-tools/typespec-ts": "^0.37.0",
     "@typespec/http-client-python": "^0.4.4",
     "@typespec/json-schema": "^0.63.0",
     "@typespec/openapi": "^0.63.0",
