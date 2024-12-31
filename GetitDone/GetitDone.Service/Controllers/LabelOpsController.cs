@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Getitdone.Service.Controllers
 {
+    [Route("labels")]
     [ApiController]
     public partial class LabelOpsController : LabelOpsOperationsControllerBase
     {

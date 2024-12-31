@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Getitdone.Service.Controllers
 {
+    [Route("comments")]
     [ApiController]
     public partial class CommentOpsController : CommentOpsOperationsControllerBase
     {

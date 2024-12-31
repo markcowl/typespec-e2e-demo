@@ -1,0 +1,54 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": ".NET: Launch a local .NET Core Web App (HTTP)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/GetitDone/GetitDone.Service/bin/Debug/net9.0/Getitdone.Service.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/GetitDone/GetitDone.Service",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://localhost:5091"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/GetitDone/GetitDone.Service/Views"
+      }
+    },
+    {
+        "name": ".NET Core Launch (CLI)",
+        "type": "coreclr",
+        "request": "launch",
+        "preLaunchTask": "build",
+        "program": "${workspaceFolder}/GetitDone/GetitDone.CLI/bin/Debug/net9.0/GetitDone.CLI.dll",
+        "args": [],
+        "cwd": "${workspaceFolder}/GetitDone.CLI",
+        "console": "internalConsole",
+        "stopAtEntry": false
+    },
+    {
+        "name": ".NET Core Launch (CLI) with Selectable Arguments",
+        "type": "coreclr",
+        "request": "launch",
+        "preLaunchTask": "build",
+        "program": "${workspaceFolder}/GetitDone/GetitDone.CLI/bin/Debug/net9.0/GetitDone.CLI.dll",
+        "args": [
+            "delete-project",
+            "--id",
+            "3136d33d-fd51-444e-8c94-cbbe7f2946ab",
+            "--api-endpoint",
+            "http://localhost:5091"
+        ],
+        "cwd": "${workspaceFolder}/GetitDone/GetitDone.CLI",
+        "console": "internalConsole",
+        "stopAtEntry": false
+    }
+  ]  
+}

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Getitdone.Service.Controllers
 {
+    [Route("todoitems")]
     [ApiController]
     public partial class TodoItemOpsController : TodoItemOpsOperationsControllerBase
     {

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Getitdone.Service.Controllers
 {
+    [Route("projects")]
     [ApiController]
     public partial class ProjectOpsController : ProjectOpsOperationsControllerBase
     {

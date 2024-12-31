@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Getitdone.Service.Controllers
 {
+    [Route("sections")]
     [ApiController]
     public partial class SectionOpsController : SectionOpsOperationsControllerBase
     {
