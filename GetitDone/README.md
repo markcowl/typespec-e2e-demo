@@ -209,7 +209,7 @@ GetitDone/
 
 Copy the `generated` files folder from `GetitDone\servers\aspnet\generated`) to the `GetitDone.Service` folder. Your `GetitDone.Service` folder should now look like this:
 
-    ```text
+```text
 GetitDone.Service/
 ┣ Controllers/
 ┣ generated/
@@ -222,7 +222,7 @@ GetitDone.Service/
 ┣ Getitdone.Service.csproj
 ┣ Getitdone.Service.http
 ┗ Program.cs
-    ```
+```
 This `generated` folder contains the stub code, including the controller base classes, generated from your TypeSpec file.
 
 ## Step 3: Build and run the application
@@ -231,15 +231,15 @@ This `generated` folder contains the stub code, including the controller base cl
 2.  **Navigate to the project directory:** Navigate to the `Getitdone.Service` directory.
 3.  **Build the project:** Run the following command:
 
-    ```bash
-    dotnet build
-    ```
+```bash
+dotnet build
+```
 
 4.  **Run the project:** After a successful build, run the project:
 
-    ```bash
-    dotnet run
-    ```
+```bash
+dotnet run
+```
 
     The console output will display the base URL where your API is running (e.g., `http://localhost:5091`).
 
@@ -425,9 +425,9 @@ dotnet build
 
 In your terminal, navigate to the `Getitdone.ClientExample` directory and run the following command:
 
-    ```bash
-    dotnet run
-    ```
+```bash
+dotnet run
+```
 
 ### Expected Output
 
@@ -522,8 +522,7 @@ The CLI supports the following commands:
 ### Examples
 
 *   **List all projects:**
-
-    ```bash
+*   ```bash
     dotnet run list-projects --api-endpoint http://localhost:5091
     ```
 
