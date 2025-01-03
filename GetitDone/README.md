@@ -26,7 +26,7 @@ This guide demonstrates how to build a [Todoist](https://todoist.com/) (todo app
 
 Please note, this project is only demonstrating a clone of the backend API and does not include a front-end application. The front-end is a simple HTML/JS/CSS application that interacts with the API to demonstrate basic functionality. A more sophisticated front end using the JavaScript/TypeScript client code bundled into a browser experience is a work in progress.
 
-The TypeSpec file was itself also generated with the help of AI - I used Windows Copilot to scrape the API documentation, Azure OpenAI o1-preview to generate an OpenAPI spec from the scraped documentation, then to generate the TypeSpec file from the OpenAPI spec. I then used GitHub Copilot in VS Code to work through the various build issues in the original TypeSpec file, and once the file was clean, I was able to generate the service stub code. The repository contains the full implementation for the API, and this guide will focus on using the TypeSpec-generated stub code with that implementation.
+The TypeSpec file was itself also generated with the help of AI - I used Windows Copilot to scrape the ToDoist API documentation, Azure OpenAI o1-preview to generate an OpenAPI spec from the scraped documentation, then again to generate a draft TypeSpec file from the OpenAPI spec. I then used GitHub Copilot in VS Code to work through the various errors in the TypeSpec code, and once the file was clean I was able to generate the service stub code. 
 
 ## Project Overview
 
