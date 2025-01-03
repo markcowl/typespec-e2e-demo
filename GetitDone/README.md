@@ -3,23 +3,22 @@
 ## Table of contents
 
 *   [Introduction](#introduction)
+*   [Project Overview](#project-overview)
+    *   [Repository Interfaces](#repository-interfaces)
+    *   [In-Memory Repository Implementations](#in-memory-repository-implementations)
+    *   [Service Layer Implementations](#service-layer-implementations)
+    *   [Controller Helper](#controller-helper)
+    *   [Concrete Controllers](#concrete-controllers)
+    *   [Dependency Injection Configuration](#dependency-injection-configuration)
 *   [Prerequisites](#prerequisites)
-*   [Step 0: Generate service stub code from TypeSpec](#step-0-generate-service-code-with-typespec)
-*   [Step 1: Create a new asp.net core web API project](#step-1-create-a-new-aspnet-core-web-api-project)
-*   [Step 2: Organize the project structure](#step-2-organize-the-project-structure)
-*   [Step 3: Add generated stub code](#step-3-add-generated-code)
-*   [Step 4: Create repository interfaces](#step-4-create-repository-interfaces)
-*   [Step 5: Create in-memory repository implementations](#step-5-create-in-memory-repository-implementations)
-*   [Step 6: Create service layer implementations](#step-6-create-service-layer-implementations)
-*   [Step 7: Create controller helper](#step-7-create-controller-helper)
-*   [Step 8: Create concrete controllers](#step-8-create-concrete-controllers)
-*   [Step 9: Configure dependency injection](#step-9-configure-dependency-injection)
-*   [Step 10: Build and run the application](#step-10-build-and-run-the-application)
-*   [Step 11: Test the API with thunder client and a simple html front-end](#step-11-test-the-api-with-thunder-client-and-a-simple-html-front-end)
+*   [Step 1: Generate service stub code from TypeSpec](#step-1-generate-service-stub-code-from-typespec)
+*   [Step 2: Add generated stub code to existing webapi service project](#step-2-add-generated-stub-code-to-existing-webapi-service-project)
+*   [Step 3: Build and run the application](#step-3-build-and-run-the-application)
+*   [Step 4: Test the API with thunder client and a simple html front-end](#step-4-test-the-api-with-thunder-client-and-a-simple-html-front-end)
     *   [Using thunder client](#using-thunder-client)
     *   [Using the simple html front-end](#using-the-simple-html-front-end)
-*   [Step 12: Using the Client Example Application](#step-12-using-the-client-example-application)    
-*   [Conclusion](#conclusion)
+*   [Step 5: Using the Client Example Application](#step-5-using-the-client-example-application)
+*   [Step 6: Using the CLI Tool](#step-6-using-the-cli-tool)
 
 ## Introduction
 
@@ -164,7 +163,6 @@ app.Run();
 
 This configuration ensures that the repositories and services are properly registered with the dependency injection container.
 
-
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
@@ -207,7 +205,6 @@ GetitDone/
 ┗ tspconfig.yaml
 ```
 
-
 ## Step 2: Add generated stub code to existing webapi service project
 
 Copy the `generated` files folder from `GetitDone\servers\aspnet\generated`) to the `GetitDone.Service` folder. Your `GetitDone.Service` folder should now look like this:
@@ -227,7 +224,6 @@ GetitDone.Service/
 ┗ Program.cs
     ```
 This `generated` folder contains the stub code, including the controller base classes, generated from your TypeSpec file.
-
 
 ## Step 3: Build and run the application
 
@@ -415,7 +411,7 @@ The `Getitdone.ClientExample` project is a console application that demonstrates
 ### Prerequisites
 
 *   Ensure that the API service is running, as described in [Step 3: Build and run the application](#step-3-build-and-run-the-application).
-*   **Ensure that the client code has been generated from your TypeSpec file.** 
+*   **Ensure that the client code has been generated from your TypeSpec file.**
 
 ### Building the Client
 
@@ -455,3 +451,126 @@ The `Program.cs` file in the `Getitdone.ClientExample` project demonstrates the 
 *   **Handling responses:** It processes the responses from the API and prints the results to the console.
 
 This example provides a basic demonstration of how to use the generated client code to interact with the API. You can modify this code to perform more complex operations or to test specific scenarios.
+
+## Step 6: Using the CLI Tool
+
+The `GetitDone.CLI` project is a command-line interface tool that allows you to interact with the Getitdone API directly from your terminal. This tool provides a convenient way to manage your projects, todo items, and other resources.
+
+### Prerequisites
+
+*   Ensure that the API service is running, as described in [Step 3: Build and run the application](#step-3-build-and-run-the-application).
+*   **Ensure that the client code has been generated from your TypeSpec file.**
+*   Ensure that the CLI project has a reference to the generated client code.
+
+### Building the CLI
+
+In a terminal, navigate to the `Getitdone\GetitDone.CLI\` directory. Run the following command to build the CLI application:
+
+```bash
+dotnet build
+```
+
+### Running the CLI
+
+In your terminal, navigate to the `Getitdone\GetitDone.CLI\` directory and run the following command:
+
+```bash
+dotnet run <command> [options]
+```
+
+Replace `<command>` and `[options]` with the desired command and options.
+
+### Available Commands
+
+The CLI supports the following commands:
+
+*   **`list-projects`**: Lists all projects.
+    *   **Options:**
+        *   `--api-endpoint`: Specifies the API endpoint (defaults to `https://api.Getitdone.com`).
+*   **`create-project`**: Creates a new project.
+    *   **Options:**
+        *   `--name`: (Required) The name of the project.
+        *   `--color`: The color of the project.
+        *   `--api-endpoint`: Specifies the API endpoint (defaults to `https://api.Getitdone.com`).
+*   **`get-project`**: Gets a specific project by ID.
+    *   **Options:**
+        *   `--id`: (Required) The ID of the project.
+        *   `--api-endpoint`: Specifies the API endpoint (defaults to `https://api.Getitdone.com`).
+*   **`delete-project`**: Deletes a specific project by ID.
+    *   **Options:**
+        *   `--id`: (Required) The ID of the project.
+        *   `--api-endpoint`: Specifies the API endpoint (defaults to `https://api.Getitdone.com`).
+*   **`delete-all-projects`**: Deletes all projects.
+    *   **Options:**
+        *   `--api-endpoint`: Specifies the API endpoint (defaults to `https://api.Getitdone.com`).
+*   **`list-todos`**: Lists all todo items.
+    *   **Options:**
+        *   `--api-endpoint`: Specifies the API endpoint (defaults to `https://api.Getitdone.com`).
+*   **`create-todo`**: Creates a new todo item.
+    *   **Options:**
+        *   `--content`: (Required) The content of the todo item.
+        *   `--api-endpoint`: Specifies the API endpoint (defaults to `https://api.Getitdone.com`).
+*   **`get-todo`**: Gets a specific todo item by ID.
+    *   **Options:**
+        *   `--id`: (Required) The ID of the todo item.
+        *   `--api-endpoint`: Specifies the API endpoint (defaults to `https://api.Getitdone.com`).
+*   **`delete-todo`**: Deletes a specific todo item by ID.
+    *   **Options:**
+        *   `--id`: (Required) The ID of the todo item.
+        *   `--api-endpoint`: Specifies the API endpoint (defaults to `https://api.Getitdone.com`).
+
+### Examples
+
+*   **List all projects:**
+
+    ```bash
+    dotnet run list-projects --api-endpoint http://localhost:5091
+    ```
+
+*   **Create a new project:**
+
+    ```bash
+    dotnet run create-project --name "My New Project" --color "blue" --api-endpoint http://localhost:5091
+    ```
+
+*   **Get a specific project:**
+
+    ```bash
+    dotnet run get-project --id "your-project-id" --api-endpoint http://localhost:5091
+    ```
+
+*   **Delete a specific project:**
+
+    ```bash
+    dotnet run delete-project --id "your-project-id" --api-endpoint http://localhost:5091
+    ```
+
+*   **Delete all projects:**
+
+    ```bash
+    dotnet run delete-all-projects --api-endpoint http://localhost:5091
+    ```
+
+*   **List all todo items:**
+
+    ```bash
+    dotnet run list-todos --api-endpoint http://localhost:5091
+    ```
+
+*   **Create a new todo item:**
+
+    ```bash
+    dotnet run create-todo --content "My new task" --api-endpoint http://localhost:5091
+    ```
+
+*   **Get a specific todo item:**
+
+    ```bash
+    dotnet run get-todo --id "your-todo-id" --api-endpoint http://localhost:5091
+    ```
+
+*   **Delete a specific todo item:**
+
+    ```bash
+    dotnet run delete-todo --id "your-todo-id" --api-endpoint http://localhost:5091
+    ```
