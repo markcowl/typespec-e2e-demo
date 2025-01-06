@@ -22,11 +22,10 @@
 
 ## Introduction
 
-This guide demonstrates how to build a [Todoist](https://todoist.com/) (todo app) API clone using C# and .NET, leveraging service code generated from TypeSpec. We will create a service backend using TypeSpec-generated stub code and a pre-existing implementation generated using AI. For instructions on using AI to generate the implementation code, refer to the [getitdone-implementation-ai](../doc/getitdone-implementation-ai.md) document.
+This guide demonstrates how to build a [Todoist](https://todoist.com/) (todo app) API clone using C# and .NET, leveraging service code generated from TypeSpec. We will create a service backend using TypeSpec-generated stub code and a pre-existing implementation generated using AI. The TypeSpec file was itself also generated with the help of AI.  
+For a walkthrough on how I used AI to generate the TypeSpec file and the implementation code, refer to the [getitdone-implementation-ai](../doc/getitdone-implementation-ai.md) document.
 
 Please note, this project is only demonstrating a clone of the backend API and does not include a front-end application. The front-end is a simple HTML/JS/CSS application that interacts with the API to demonstrate basic functionality. A more sophisticated front end using the JavaScript/TypeScript client code bundled into a browser experience is a work in progress.
-
-The TypeSpec file was itself also generated with the help of AI - I used Windows Copilot to scrape the ToDoist API documentation, Azure OpenAI o1-preview to generate an OpenAPI spec from the scraped documentation, then again to generate a draft TypeSpec file from the OpenAPI spec. I then used GitHub Copilot in VS Code to work through the various errors in the TypeSpec code, and once the file was clean I was able to generate the service stub code. 
 
 ## Project Overview
 
