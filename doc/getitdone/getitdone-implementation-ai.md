@@ -10,10 +10,60 @@ This document provides guidance on using an AI model to generate the implementat
 
 Before you begin, ensure you have the following:
 
-*   **Access to an AI Model:** You will need access to a capable AI model with a large context window. Examples include Google Gemini 2.0 Flash, OpenAI's GPT models, or similar.
-*   **TypeSpec-Generated Stub Code:** You should have already generated the service stub code from your TypeSpec file, as described in the main guide.
-*   **Basic Understanding of C# and .NET:** Familiarity with C# syntax and .NET concepts is helpful.
-*   **Visual Studio Code (VS Code):** VS Code is recommended for code editing.
+* **Access to AI Models:** You will need access to a capable AI model with a large context window. Examples include Google Gemini 2.0 Flash, OpenAI's GPT models, or similar. You'll also need access to Windows Copilot in your web browser and GitHub Copilot in Visual Studio Code.
+* **TypeSpec-Generated Stub Code:** You should have already generated the service stub code from your TypeSpec file, as described in the main guide.
+* **Basic Understanding of C# and .NET:** Familiarity with C# syntax and .NET concepts is helpful.
+* **Visual Studio Code (VS Code):** VS Code is recommended for code editing.
+
+## Generating the TypeSpec File
+
+To generate the TypeSpec file, follow these steps:
+
+1. **Scrape the Todoist API Documentation:**
+    - Use Windows Copilot to scrape the [Todoist API documentation](https://developer.todoist.com/rest/v2/#overview).
+        - **Prompt:** "Extract all the API routes, models, and responses from this page."
+        - **Response:** Copilot provided a list of API routes, models, and responses, including endpoints for projects, sections, tasks, comments, and labels.
+
+2. **Generate an OpenAPI Specification:**
+    - Use Azure OpenAI o1-preview to generate an OpenAPI spec from the scraped documentation.
+
+3. **Generate a Draft TypeSpec File:**
+    - Use Azure OpenAI o1-preview again to generate a draft TypeSpec file from the OpenAPI spec.
+
+4. **Refine the TypeSpec File:**
+    - Use GitHub Copilot in VS Code to work through the various errors in the TypeSpec code. Once the file is clean, you can generate the service stub code.
+
+### Example Prompts and Responses
+
+Here are the distilled prompts and responses used during the interaction with Copilot:
+
+1. **Scraping the Documentation:**
+    - **Prompt:** "Extract all the API routes, models, and responses from this page."
+    - **Response:** Copilot provided a list of API routes, models, and responses, including endpoints for projects, sections, tasks, comments, and labels.
+
+2. **Generating the OpenAPI Spec:**
+    - **Prompt:** "Generate an OpenAPI spec from the extracted API routes, models, and responses."
+    - **Response:** Copilot generated an OpenAPI specification based on the provided API details.
+
+3. **Generating the TypeSpec File:**
+    - **Prompt:** "Generate a TypeSpec file from the OpenAPI spec."
+    - **Response:** Copilot created a draft TypeSpec file, which was then refined using GitHub Copilot.
+
+## Rationale for Using Different AI Models/Tools
+
+Different AI models and tools were used for various steps in the process to leverage their unique strengths:
+
+1. **Windows Copilot:**
+    - **Reason:** Efficiently scrape structured data from web pages.
+    - **Usage:** Scraping the Todoist API documentation.
+
+2. **Azure OpenAI o1-preview:**
+    - **Reason:** Generate structured specifications (OpenAPI and TypeSpec) from unstructured data.
+    - **Usage:** Generating the OpenAPI spec and draft TypeSpec file.
+
+3. **GitHub Copilot:**
+    - **Reason:** Assist with code completion and error resolution in an integrated development environment.
+    - **Usage:** Refining the TypeSpec file in VS Code.
 
 ## Step 1: Generate Repository Interfaces
 

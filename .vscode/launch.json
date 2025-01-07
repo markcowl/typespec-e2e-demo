@@ -40,9 +40,9 @@
         "preLaunchTask": "build",
         "program": "${workspaceFolder}/GetitDone/GetitDone.CLI/bin/Debug/net9.0/GetitDone.CLI.dll",
         "args": [
-            "delete-project",
-            "--id",
-            "3136d33d-fd51-444e-8c94-cbbe7f2946ab",
+            "create-todo",
+            "--content",
+            "my new task",
             "--api-endpoint",
             "http://localhost:5091"
         ],
