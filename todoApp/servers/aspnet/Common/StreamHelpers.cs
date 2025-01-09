@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Todo.Service.Common
 {
@@ -16,9 +17,14 @@ namespace Todo.Service.Common
 
         public static async Task<T?> AsJsonAsync<T>(this Stream stream)
         {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
             using var sr = new StreamReader(stream);
             var json = await sr.ReadToEndAsync();
-            return JsonSerializer.Deserialize<T>(json);
+            return JsonSerializer.Deserialize<T>(json, options);
         }
     }
 }
