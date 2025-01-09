@@ -46,16 +46,16 @@ namespace Todo.Service.Controllers
         [Route("/items/{itemId}/attachments")]
         [Consumes("multipart/form-data")]
         [ProducesResponseType((int)HttpStatusCode.NoContent, Type = typeof(void))]
-        public virtual async Task<IActionResult> CreateFileAttachment(long itemId, HttpRequest request, Stream body)
+        public virtual async Task<IActionResult> CreateFileAttachment(long itemId)
         {
-            var boundary = request.GetMultipartBoundary();
+            var boundary = Request.GetMultipartBoundary();
             if (boundary == null)
             {
                 return BadRequest("Request missing multipart boundary");
             }
 
 
-            var reader = new MultipartReader(boundary, body);
+            var reader = new MultipartReader(boundary, Request.Body);
             await AttachmentsOperationsImpl.CreateFileAttachmentAsync(itemId, reader);
             return Ok();
         }

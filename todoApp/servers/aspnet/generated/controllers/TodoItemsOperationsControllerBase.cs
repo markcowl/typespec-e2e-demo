@@ -46,16 +46,16 @@ namespace Todo.Service.Controllers
         [Route("/items")]
         [Consumes("multipart/form-data")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(TodoItem))]
-        public virtual async Task<IActionResult> CreateForm(HttpRequest request, Stream body)
+        public virtual async Task<IActionResult> CreateForm()
         {
-            var boundary = request.GetMultipartBoundary();
+            var boundary = Request.GetMultipartBoundary();
             if (boundary == null)
             {
                 return BadRequest("Request missing multipart boundary");
             }
 
 
-            var reader = new MultipartReader(boundary, body);
+            var reader = new MultipartReader(boundary, Request.Body);
             var result = await TodoItemsOperationsImpl.CreateFormAsync(reader);
             return Ok(result);
         }

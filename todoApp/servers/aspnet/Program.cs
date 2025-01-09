@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.AspNetCore.Http.Features;
 using Todo.Exceptions;
 using Todo.Service.Common;
 using Todo.Service.Models;
@@ -16,6 +17,11 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddSingleton<IResourceStore<long, TodoItem>, InMemoryStore<long, TodoItem>>();
 builder.Services.AddSingleton<IResourceStore<long, List<TodoAttachment>>, InMemoryStore<long, List<TodoAttachment>>>();
 builder.Services.AddSingleton<IResourceStore<long, User>, InMemoryStore<long, User>>();
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MemoryBufferThreshold = int.MaxValue;
+    options.MultipartBodyLengthLimit = int.MaxValue;
+});
 
 var app = builder.Build();
 
@@ -29,6 +35,11 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.Use(async (context, next) =>
+{
+    context.Request.EnableBuffering();
+    await next();
+});
 
 app.UseRouting();
 
